@@ -1,12 +1,13 @@
 \documentclass[fleqn]{MJD}
 
 \usepackage{cancel}
-
+\usepackage{cleveref}
+\usepackage{titlesec}
 %\colorsections
 %\bluelinks
-\newcommand{\problem}[1]{\section*{Problem #1}}
-\newcommand{\subproblem}[2]{\subsection*{(#1)~ #2}}
-\newcommand{\subsubproblem}[2]{\subsubsection*{ #1)~ #2}}
+\newcommand{\problem}[1]{\chapter{Problem #1}}
+\newcommand{\subproblem}[2]{\section{(#1)~ #2}}
+\newcommand{\subsubproblem}[2]{\subsection{ #1)~ #2}}
 \newcommand{\U}{\cup}
 \renewcommand{\S}{\mathcal{S}}
 \renewcommand{\s}{\subset}
@@ -18,19 +19,28 @@
 \newcommand{\infsum}{\sum\limits_{i=1}^\infty}
 \newcommand{\sets}{\{A_1, A_2 \dots\} }
 \newcommand{\nsets}{\{A_1, \dots, A_n \} }
+
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries}{}{0pt}{\LARGE}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-
 \titleAT[CS 224N: Assignment 1]{Ryan McMahon}
 \large
+
+\begingroup
+\let\clearpage\relax
+\tableofcontents
+\endgroup
+\newpage
 
 %-------------------------------------
 \problem{1: Softmax (10 pts)}
 %-------------------------------------
 
 %----------------------
-\subproblem{a}{(5 pts)}
+\subproblem{a}{Softmax Invariance to Constant (5 pts)}
 \textit{Prove that softmax is invariant to constant offsets in the input, that is, for any input vector $x$ and any constant $c$, softmax($x$) = softmax($x + c$), where $x + c$ means adding the constant $c$ to every dimension of $x$. Remember that} 
 \begin{equation}
 	softmax(x)_{i} = \frac{e^{x_{i}}}{\sum_{j} e^{x_{j}}}
@@ -51,12 +61,12 @@
 
 
 %----------------------
-\subproblem{b}{(5 pts)}
+\subproblem{b}{Softmax Coding (5 pts)}
 \textit{Given an input matrix of $N$ rows and $D$ columns, compute the softmax prediction for each
 row using the optimization in part (a). Write your implementation in} \verb|q1_softmax.py|. \textit{You may test
 by executing} \verb|python q1_softmax.py|. \\
 
-\noindent\textit{Note: The provided tests are not exhaustive. Later parts of the assignment will reference this code so it is important to have a correct implementation. Your implementation should also be efficient and vectorized whenever possible (i.e., use numpy matrix operations rather than for loops). A non-vectorized implementation will not receive full credit!} 
+\noindent\textit{Note: The provided tests are not exhaustive. Later parts of the assignment will reference this code so it is important to have a correct implementation. Your implementation should also be efficient and vectorized whenever possible (i.e., use numpy matrix operations rather than for loops). A non-vectorized implementation will not receive full credit!} \\
 
 \noindent \textbf{Answer:} \\
 
@@ -71,11 +81,9 @@ by executing} \verb|python q1_softmax.py|. \\
 
 
 %----------------------
-\subproblem{a}{(3 pts)}
+\subproblem{a}{Sigmoid Gradient (3 pts)}
 
-\textit{Derive the gradients of the sigmoid function and show that it can be rewritten as a function
-of the function value (i.e., in some expression where only σ(x), but not x, is present). Assume that the
-input x is a scalar for this question. Recall, the sigmoid function is}
+\textit{Derive the gradients of the sigmoid function and show that it can be rewritten as a function of the function value (i.e., in some expression where only σ(x), but not x, is present). Assume that the input x is a scalar for this question. Recall, the sigmoid function is}
 
 \begin{equation}
 	\sigma(x) = \frac{1}{1 + e^{-x}}
@@ -96,6 +104,7 @@ input x is a scalar for this question. Recall, the sigmoid function is}
 			  &= \frac{e^{x}}{(1 + e^{x})^{2}}  = \sigma(x) \times (1 - \sigma(x)) \nonumber 
 \end{align}
 
+\vskip2em
 \noindent Because $1 - \sigma(x) = \sigma(-x)$ we can show that:
 
 \begin{align}
@@ -110,11 +119,18 @@ input x is a scalar for this question. Recall, the sigmoid function is}
 
 
 
-\subproblem{b}{(3 pts)}
+%----------------------
+\newpage
+\subproblem{b}{Softmax Gradient w/ Cross Entropy Loss (3 pts)}
 
-\textit{Derive the gradient with regard to the inputs of a softmax function when cross entropy loss
-is used for evaluation, i.e., find the gradients with respect to the softmax input vector $\bm{\theta}$, when the prediction is made by $\hat{\mathbf{y}} = softmax(\bm{\theta})$. Remember the cross entropy function is}
+\textit{Derive the gradient with regard to the inputs of a softmax function when cross entropy loss is used for evaluation, i.e., find the gradients with respect to the softmax input vector $\bm{\theta}$, when the prediction is made by $\hat{\mathbf{y}} = softmax(\bm{\theta})$. Remember the cross entropy function is}
 
+\begin{equation}
+	CE(\mathbf{y},\hat{\mathbf{y}}) = - \sum_{i} y_{i} \times log(\hat{y_{i}})
+\end{equation}
+
+\noindent \textit{where $\mathbf{y}$ is the one-hot label vector, and $\hat{\mathbf{y}}$ is the predicted probability vector for all classes. (Hint: you might want to consider the fact many elements of $\mathbf{y}$ are zeros, and assume that only the $k-th$ dimension
+of $\mathbf{y}$ is one.)}
 
 %--------------------------------
 
