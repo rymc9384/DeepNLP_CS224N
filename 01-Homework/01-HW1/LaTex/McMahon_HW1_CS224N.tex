@@ -130,8 +130,72 @@ by executing} \verb|python q1_softmax.py|. \\
 \end{equation}
 
 \noindent \textit{where $\mathbf{y}$ is the one-hot label vector, and $\hat{\mathbf{y}}$ is the predicted probability vector for all classes. (Hint: you might want to consider the fact many elements of $\mathbf{y}$ are zeros, and assume that only the $k-th$ dimension
-of $\mathbf{y}$ is one.)}
+of $\mathbf{y}$ is one.)} \\
 
+\noindent \textbf{Answer:} \\
+
+\noindent Let $S$ represent the softmax function:
+
+\begin{align}
+	f_{i} &= e^{\theta_{i}} \nonumber \\
+	%
+	g_{i} &= \sum_{k=1}^{K} e^{\theta_{k}} \nonumber \\
+	%
+	S_{i} &= \frac{f_{i}}{g_{i}} \nonumber \\
+	%
+	\frac{\partial S_{i}}{\partial \theta_{j}} &= \frac{f'_{i} g_{i} - g'_{i} f_{i}}{g_{i}^{2}} \nonumber
+\end{align}
+
+\vskip2em
+%
+\noindent So if $i = j$:
+\begin{align}
+	f'_{i} &= f_{i}; \hspace*{5pt} g'_{i} = e^{\theta_{j}} \nonumber \\
+	%
+	\frac{\partial S_{i}}{\partial \theta_{j}} &= \frac{e^{\theta_{i}} \sum_{k} e^{\theta_{k}} - e^{\theta_{j}} e^{\theta_{i}} }{ (\sum_{k} e^{\theta_{k}})^{2} } \nonumber \\
+	%
+		   &= \frac{e^{\theta_{i}}}{\sum_{k} e^{\theta_{k}}} \times \frac{\sum_{k} e^{\theta_{k}} - e^{\theta_{j}}}{\sum_{k} e^{\theta_{k}}} \nonumber \\
+	%
+		   &= S_{i} \times (1 - S_{i}) \nonumber
+\end{align}
+
+\vskip2em
+%
+\noindent And if $i \ne j$:
+\begin{align}
+	\frac{\partial S_{i}}{\partial \theta_{j}} %
+		&= \frac{0 - e^{\theta_{j}} e^{\theta_{i}}}{(\sum_{k} e^{\theta_{k}})^{2}} \nonumber \\
+	%
+		&= - \frac{e^{\theta_{j}}}{\sum_{k} e^{\theta_{k}}} \times \frac{e^{\theta_{i}}}{\sum_{k} e^{\theta_{k}}} \nonumber \\
+	%
+		&= -S_{j} \times S_{i} \nonumber
+\end{align}
+
+\newpage
+
+\noindent We can now use these when operating on our loss function (let $L$ represent the cross entropy function):
+\begin{align}
+	\frac{\partial L}{\partial \theta_{i}} % 
+		&= - \sum_{k} y_{k} \frac{\partial log S_{k}}{\partial \theta_{i}}	\nonumber \\
+	%
+		&= - \sum_{k} y_{k} \frac{1}{S_{k}} \frac{\partial S_{k}}{\partial \theta_{i}} \nonumber \\
+	%
+		&= - y_{i} (1 - S_{i}) - \sum_{k \ne i} y_{k} \frac{1}{S_{k}} (-S_{k} \times S_{i}) \nonumber \\
+	% 
+		&= - y_{i} (1 - S_{i}) + \sum_{k \ne i} y_{k} S_{i} \nonumber \\
+	%
+		&= - y_{i} + y_{i} S_{i} + \sum_{k \ne i} y_{k} S_{i} \nonumber \\
+	%
+		&= S_{i}(\sum_{k} y_{k}) - y_{i} \nonumber
+\end{align}
+
+\vskip2em
+
+\noindent And because we know that $\sum_{k} y_{k} = 1$:
+\begin{align}
+	\frac{\partial L}{\partial \theta_{i}} % 
+			&= S_{i} - y_{i} \nonumber
+\end{align} 
 %--------------------------------
 
 
