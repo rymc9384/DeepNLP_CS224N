@@ -1,4 +1,7 @@
 \documentclass[fleqn]{MJD}
+
+\usepackage{cancel}
+
 %\colorsections
 %\bluelinks
 \newcommand{\problem}[1]{\section*{Problem #1}}
@@ -22,9 +25,99 @@
 \titleAT[CS 224N: Assignment 1]{Ryan McMahon}
 \large
 
-%-----------------
-\problem{1: }
+%-------------------------------------
+\problem{1: Softmax (10 pts)}
+%-------------------------------------
+
+%----------------------
+\subproblem{a}{(5 pts)}
+\textit{Prove that softmax is invariant to constant offsets in the input, that is, for any input vector $x$ and any constant $c$, softmax($x$) = softmax($x + c$), where $x + c$ means adding the constant $c$ to every dimension of $x$. Remember that} 
+\begin{equation}
+	softmax(x)_{i} = \frac{e^{x_{i}}}{\sum_{j} e^{x_{j}}}
+\end{equation}
+
+
+\noindent\textbf{Answer:} \\
+
+\noindent We can show that softmax($x$) = softmax($x+c$) by factoring out $c$ and canceling:
+
+\begin{align}
+	softmax(x + c)_{i} &= \frac{e^{x_{i} + c}}{\sum_{j} e^{x_{j} + c}} %
+	 					= \frac{e^{x_{i}} \times e^{c}}{e^{c} \times \sum_{j} e^{x_{j}}} \nonumber \\
+	%
+					   &= \frac{e^{x_{i}} \times \cancel{e^{c}}}{\cancel{e^{c}} \times \sum_{j} e^{x_{j}}} %
+					    = softmax(x)_{i} \nonumber
+\end{align}
+
+
+%----------------------
+\subproblem{b}{(5 pts)}
+\textit{Given an input matrix of $N$ rows and $D$ columns, compute the softmax prediction for each
+row using the optimization in part (a). Write your implementation in} \verb|q1_softmax.py|. \textit{You may test
+by executing} \verb|python q1_softmax.py|. \\
+
+\noindent\textit{Note: The provided tests are not exhaustive. Later parts of the assignment will reference this code so it is important to have a correct implementation. Your implementation should also be efficient and vectorized whenever possible (i.e., use numpy matrix operations rather than for loops). A non-vectorized implementation will not receive full credit!} 
+
+\noindent \textbf{Answer:} \\
+
+\noindent See code: $\sim$\verb|/code/q1_softmax.py|.
+
+
+
+\newpage
+%-------------------------------------
+\problem{2: Neural Network Basics (30 pts)}
+%-------------------------------------
+
+
+%----------------------
+\subproblem{a}{(3 pts)}
+
+\textit{Derive the gradients of the sigmoid function and show that it can be rewritten as a function
+of the function value (i.e., in some expression where only σ(x), but not x, is present). Assume that the
+input x is a scalar for this question. Recall, the sigmoid function is}
+
+\begin{equation}
+	\sigma(x) = \frac{1}{1 + e^{-x}}
+\end{equation}
+
+
+\noindent \textbf{Answer:}
+
+\begin{align}
+	\sigma(x) &= \frac{1}{1 + e^{-x}} \nonumber \\
+	%
+			  &= \frac{e^{x}}{1 + e^{x}} \nonumber \\
+	%
+	\frac{\partial}{\partial x} \sigma(x) &= \frac{e^{x} \times (1 + e^{x}) - (e^{x} \times e^{x})}{(1 + e^{x})^{2}} \nonumber \\
+	%
+			  &= \frac{e^{x} + \cancel{(e^{x} \times e^{x})} - \cancel{(e^{x} \times e^{x})}}{(1 + e^{x})^{2}} \nonumber \\
+	%
+			  &= \frac{e^{x}}{(1 + e^{x})^{2}}  = \sigma(x) \times (1 - \sigma(x)) \nonumber 
+\end{align}
+
+\noindent Because $1 - \sigma(x) = \sigma(-x)$ we can show that:
+
+\begin{align}
+	\frac{\partial}{\partial x} \sigma(x) &= \frac{e^{x}}{(1 + e^{x})^{2}} \nonumber \\
+	%
+			  &= \sigma(x) \times \sigma(-x) \nonumber \\
+	%
+			  &= \frac{e^{x}}{1 + e^{x}} \times \frac{1}{1 + e^{+x}} \nonumber \\
+	%
+			  &= \frac{e^{x}}{(1 + e^{x})^{2}} \nonumber
+\end{align}
+
+
+
+\subproblem{b}{(3 pts)}
+
+\textit{Derive the gradient with regard to the inputs of a softmax function when cross entropy loss
+is used for evaluation, i.e., find the gradients with respect to the softmax input vector $\bm{\theta}$, when the prediction is made by $\hat{\mathbf{y}} = softmax(\bm{\theta})$. Remember the cross entropy function is}
+
 
 %--------------------------------
+
+
 
 \end{document}
