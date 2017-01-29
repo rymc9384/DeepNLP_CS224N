@@ -4,3 +4,7 @@
 \BOOKMARK [0][-]{chapter.2}{Problem 2: Neural Network Basics \(30 pts\)}{}% 4
 \BOOKMARK [1][-]{section.2.1}{\(a\) \040Sigmoid Gradient \(3 pts\)}{chapter.2}% 5
 \BOOKMARK [1][-]{section.2.2}{\(b\) \040Softmax Gradient w/ Cross Entropy Loss \(3 pts\)}{chapter.2}% 6
+\BOOKMARK [1][-]{section.2.3}{\(c\) \040One Hidden Layer Gradient \(6 pts\)}{chapter.2}% 7
+\BOOKMARK [1][-]{section.2.4}{\(d\) \040No. Parameters \(2 pts\)}{chapter.2}% 8
+\BOOKMARK [1][-]{section.2.5}{\(e\) \040Sigmoid Activation Code \(4 pts\)}{chapter.2}% 9
+\BOOKMARK [1][-]{section.2.6}{\(f\) \040Gradient Check Code \(4 pts\)}{chapter.2}% 10

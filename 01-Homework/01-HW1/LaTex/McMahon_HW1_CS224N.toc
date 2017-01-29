@@ -5,3 +5,7 @@
 \contentsline {chapter}{\numberline {2}Problem 2: Neural Network Basics (30 pts)}{3}{chapter.2}
 \contentsline {section}{\numberline {2.1}(a)~ Sigmoid Gradient (3 pts)}{3}{section.2.1}
 \contentsline {section}{\numberline {2.2}(b)~ Softmax Gradient w/ Cross Entropy Loss (3 pts)}{4}{section.2.2}
+\contentsline {section}{\numberline {2.3}(c)~ One Hidden Layer Gradient (6 pts)}{6}{section.2.3}
+\contentsline {section}{\numberline {2.4}(d)~ No. Parameters (2 pts)}{6}{section.2.4}
+\contentsline {section}{\numberline {2.5}(e)~ Sigmoid Activation Code (4 pts)}{7}{section.2.5}
+\contentsline {section}{\numberline {2.6}(f)~ Gradient Check Code (4 pts)}{7}{section.2.6}

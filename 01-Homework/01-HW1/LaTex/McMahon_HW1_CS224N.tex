@@ -59,6 +59,7 @@
 					    = softmax(x)_{i} \nonumber
 \end{align}
 
+\vskip5em
 
 %----------------------
 \subproblem{b}{Softmax Coding (5 pts)}
@@ -196,7 +197,89 @@ of $\mathbf{y}$ is one.)} \\
 	\frac{\partial L}{\partial \theta_{i}} % 
 			&= S_{i} - y_{i} \nonumber
 \end{align} 
-%--------------------------------
+
+
+
+%----------------------
+\newpage
+\subproblem{c}{One Hidden Layer Gradient (6 pts)}
+
+\textit{Derive the gradients with respect to the inputs $\bm{x}$ to a one-hidden-layer neural network (that is, find $\frac{\partial J}{\partial \bm{x}}$ where $J = CE(\mathbf{y}, \hat{\mathbf{y}})$ is the cost function for the neural network). The neural network employs sigmoid activation function for the hidden layer, and softmax for the output layer. Assume the one-hot label vector is $\mathbf{y}$, and cross entropy cost is used. (Feel free to use $\sigma'(x)$ as the shorthand for sigmoid gradient, and feel free to define any variables whenever you see fit.)} \\
+
+\noindent \textit{Recall that forward propoagation is as follows}
+\begin{align}
+	\mathbf{h} &= sigmoid(\bm{xW}_{1} + \bm{b}_{1})	& \hat{\bm{y}} = softmax(\bm{hW}_{2} + \bm{b}_{2}) \nonumber
+\end{align}
+
+\vskip2em
+
+\noindent \textbf{Answer:} \\
+
+\noindent Let $f_{2} = \bm{xW}_{1} + \bm{b}_{1}$ and $f_{3} = \bm{hW}_{2} + \bm{b}_{2}$;
+
+\begin{align}
+	\frac{\partial J}{\partial f_{3}} %
+		&= \delta_{3} = \hat{\bm{y}} - \bm{y} \nonumber \\
+	%
+	\frac{\partial J}{\partial f_{2}} %
+		&= \delta_{2} = \bm{W}_{2}\delta_{3} \circ \sigma'(f_{2}) \nonumber \\
+	%
+	\frac{\partial J}{\partial \bm{x}} %
+		&= \frac{\partial J}{\partial f_{2}} \frac{\partial f_{2}}{\partial \bm{x}} \nonumber \\
+	%
+		&= \delta_{2} \frac{\partial f_{2}}{\partial \bm{x}} \nonumber \\
+	%
+		&= \delta_{2} \frac{\partial}{\partial \bm{x}} \bm{xW}_{1} + \bm{b}_{1} \nonumber \\
+	% 
+		&= \delta_{2} \bm{W}_{1} \nonumber
+\end{align}
+
+\vskip5em
+
+%----------------------
+\subproblem{d}{No. Parameters (2 pts)}
+
+\textit{How many parameters are there in this neural network} [from (\textbf{c}) above], \textit{assuming the input is $D_{x}-$dimensional, the output is $D_{y}-$dimensional, and there are $H$ hidden units?} \\
+
+\noindent \textbf{Answer:} \\
+
+\begin{align}
+	n_{W_{1}} &= D_{x} \times H \nonumber \\
+	%
+	n_{b_{1}} &= H \nonumber \\
+	%
+	n_{W_{2}} &= H \times D_{y} \nonumber \\
+	%
+	n_{b_{2}} &= D_{y} \nonumber \\
+	%
+	N &= (D_{x} \times H) + H + (H \times D_{y}) + D_{y} \nonumber
+\end{align}
+
+
+
+%----------------------
+\newpage
+\subproblem{e}{Sigmoid Activation Code (4 pts)}
+
+\textit{Fill in the implementation for the sigmoid activation function and its gradient in} \verb|q2_sigmoid.py|. \textit{Test your implementation using} \verb|python q2_sigmoid.py|. \textit{Again, thoroughly test your code as the provided tests may not be exhaustive.} \\
+
+\noindent \textbf{Answer:} \\
+
+\noindent See code: $\sim$\verb|/code/q2_sigmoid.py|.
+
+\vskip5em
+
+
+%----------------------
+\subproblem{f}{Gradient Check Code (4 pts)}
+
+\textit{To make debugging easier, we will now implement a gradient checker. Fill in the implementation for} \verb|gradcheck_naive| \textit{in} \verb|q2_gradcheck.py|. \textit{Test your code using} \verb|python q2_gradcheck.py|. \\
+
+\noindent \textbf{Answer:} \\
+
+\noindent See code: $\sim$\verb|/code/q2_gradcheck.py|.
+
+\vskip5em
 
 
 
