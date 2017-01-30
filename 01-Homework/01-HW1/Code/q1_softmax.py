@@ -44,7 +44,6 @@ def softmax(x):
         # Matrix
         exp_minmax = lambda x: np.exp(x - np.max(x))
         denom = lambda x: 1.0 / np.sum(x)
-        div = lambda x,y: x.dot(y)
         x = np.apply_along_axis(exp_minmax,1,x)
         denominator = np.apply_along_axis(denom,1,x) 
         

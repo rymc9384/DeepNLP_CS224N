@@ -219,19 +219,18 @@ of $\mathbf{y}$ is one.)} \\
 
 \begin{align}
 	\frac{\partial J}{\partial f_{3}} %
-		&= \delta_{3} = \hat{\bm{y}} - \bm{y} \nonumber \\
+		&= \bm{\delta}_{3} = \hat{\bm{y}} - \bm{y} \nonumber \\
+	%
+	\frac{\partial J}{\partial \bm{h}} %
+		&= \bm{\delta}_{2} = \bm{\delta}_{3}\bm{W}_{2}^{T} \nonumber \\
 	%
 	\frac{\partial J}{\partial f_{2}} %
-		&= \delta_{2} = \bm{W}_{2}\delta_{3} \circ \sigma'(f_{2}) \nonumber \\
+			&= \bm{\delta}_{1} = \bm{\delta}_{2} \circ \sigma'(f_{2}) \nonumber \\
 	%
 	\frac{\partial J}{\partial \bm{x}} %
-		&= \frac{\partial J}{\partial f_{2}} \frac{\partial f_{2}}{\partial \bm{x}} \nonumber \\
+		&= \bm{\delta}_{1} \frac{\partial f_{2}}{\partial \bm{x}} \nonumber \\
 	%
-		&= \delta_{2} \frac{\partial f_{2}}{\partial \bm{x}} \nonumber \\
-	%
-		&= \delta_{2} \frac{\partial}{\partial \bm{x}} \bm{xW}_{1} + \bm{b}_{1} \nonumber \\
-	% 
-		&= \delta_{2} \bm{W}_{1} \nonumber
+		&= \bm{\delta}_{1}  \bm{W}_{1}^{T} \nonumber
 \end{align}
 
 \vskip5em
