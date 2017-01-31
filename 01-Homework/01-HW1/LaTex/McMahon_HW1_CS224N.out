@@ -8,3 +8,8 @@
 \BOOKMARK [1][-]{section.2.4}{\(d\) \040No. Parameters \(2 pts\)}{chapter.2}% 8
 \BOOKMARK [1][-]{section.2.5}{\(e\) \040Sigmoid Activation Code \(4 pts\)}{chapter.2}% 9
 \BOOKMARK [1][-]{section.2.6}{\(f\) \040Gradient Check Code \(4 pts\)}{chapter.2}% 10
+\BOOKMARK [1][-]{section.2.7}{\(g\) \040Neural Net Code \(8 pts\)}{chapter.2}% 11
+\BOOKMARK [0][-]{chapter.3}{Problem 3: Word2Vec \(40 pts + 2 bonus\)}{}% 12
+\BOOKMARK [1][-]{section.3.1}{\(a\) \040Context Word Gradients \(3 pts\)}{chapter.3}% 13
+\BOOKMARK [1][-]{section.3.2}{\(b\) \040Output Word Gradients \(3 pts\)}{chapter.3}% 14
+\BOOKMARK [1][-]{section.3.3}{\(c\) \040Repeat Gradients with Negative Sampling Loss \(6 pts\)}{chapter.3}% 15

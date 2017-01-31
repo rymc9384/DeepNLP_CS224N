@@ -123,6 +123,7 @@ by executing} \verb|python q1_softmax.py|. \\
 %----------------------
 \newpage
 \subproblem{b}{Softmax Gradient w/ Cross Entropy Loss (3 pts)}
+\label{prob:2b}
 
 \textit{Derive the gradient with regard to the inputs of a softmax function when cross entropy loss is used for evaluation, i.e., find the gradients with respect to the softmax input vector $\bm{\theta}$, when the prediction is made by $\hat{\mathbf{y}} = softmax(\bm{\theta})$. Remember the cross entropy function is}
 
@@ -279,6 +280,135 @@ of $\mathbf{y}$ is one.)} \\
 \noindent See code: $\sim$\verb|/code/q2_gradcheck.py|.
 
 \vskip5em
+
+
+%----------------------
+\subproblem{g}{Neural Net Code (8 pts)}
+
+\textit{Now, implement the forward and backward passes for a neural network with one sigmoid hidden layer. Fill in your implementation in} \verb|q2_neural.py|. \textit{Sanity check your implementation with} \verb|python q2_neural.py|. \\
+
+\noindent \textbf{Answer:} \\
+
+\noindent See code: $\sim$\verb|/code/q2_neural.py|.
+
+
+
+\newpage
+
+%-------------------------------------
+\problem{3: Word2Vec (40 pts + 2 bonus)}
+%-------------------------------------
+
+%----------------------
+\subproblem{a}{Context Word Gradients (3 pts)}
+
+\textit{Assume you are given a predicted word vector $\bm{v}_{c}$ corresponding to the center word $\bm{c}$ for skipgram, and word prediction is made with the softmax function found in word2vec models}
+
+\begin{align}
+	\hat{\bm{y}}_{o} &= p(\bm{o} \hspace*{1pt} \vert \hspace*{1pt} \bm{c}) = %
+					\frac{exp(\bm{u}_{0}^{T} \bm{v}_{c})}{\sum\limits_{w=1}^{W} exp(\bm{u}_{w}^{T} \bm{v}_{c})}
+\end{align}
+
+\noindent \textit{where $\bm{w}$ denotes the w-th word and $\bm{u}_{w}$ ($w = 1,...,W$) are the ``output'' word vectors for all words in the vocabulary. Assume cross entropy cost is applied to this prediction and word $\bm{o}$ is the expected word (the $\bm{o}$-th element of the one-hot label vector is one), derive the gradients with respect to $\bm{v}_c$, } \\
+
+Hint: It will be helpful to use notation from question 2. For instance, letting $\hat{\bm{y}}$ be the vector of softmax predictions for every word, $\bm{y}$ as the expected word vector, and the loss function
+
+\begin{align}
+	J_{softmax-CE}(\bm{o}, \bm{v}_{c}, \bm{U}) &= CE(\bm{y}, \hat{\bm{y}})
+\end{align}
+
+\noindent \textit{where $\bm{U}$ = [$\bm{u}_{1}$,$\bm{u}_{1}$,$\dots$, $\bm{u}_{W}$] is the matrix of all the output vectors. Make sure you state the orientation of your vectors and matrices.} \\
+
+
+\noindent \textbf{Answer:} \\
+
+\noindent From Problem~\ref{prob:2b} we know that $\frac{\partial J}{\partial \bm{\theta}} = (\hat{\bm{y}} - \bm{y})$. Given that, let $\bm{theta} = \bm{v}_{c}$. Then 
+
+\begin{align}
+	\frac{\partial J}{\partial \bm{\theta}} &= %
+	 		\bm{U}^{T} (\hat{\bm{y}} - \bm{y}) \nonumber
+\end{align}
+
+
+
+\newpage
+%----------------------
+\subproblem{b}{Output Word Gradients (3 pts)}
+
+\textit{As in the previous part, derive gradients for the “output” word vectors $\bm{u}_{w}$ 's (including $\bm{u}_{o}$).} \\
+
+\noindent \textbf{Answer:} \\
+
+\noindent Here we're going to do essentially the same thing, but instead transpose the error. So, from above and Problem~\ref{prob:2b}, let $\bm{\theta} = \bm{U}$
+
+
+\begin{align}
+	\frac{\partial J}{\partial \bm{\theta}} &= %
+		 		\bm{v}_{c} (\hat{\bm{y}} - \bm{y})^{T} \nonumber
+\end{align}
+
+\vskip5em
+
+
+
+%----------------------
+\subproblem{c}{Repeat Gradients with Negative Sampling Loss (6 pts)}
+
+\textit{Repeat part \textbf{(a)} and \textbf{(b)} assuming we are using the negative sampling loss for the predicted vector $\bm{v}_{c}$, and the expected output word is $\bm{o}$. Assume that $\bm{K}$ negative samples (words) are drawn, and they are $\bm{1},\dots ,\bm{K}$, respectively for simplicity of notation ($o \notin \{1,...,K\}$). Again, for a given word, $o$,denote its output vector as $\bm{u}_{o}$. The negative sampling loss function in this case is}
+
+\begin{align}
+	J_{neg-sample}(\bm{o}, \bm{v}_{c}, \bm{U}) &= %
+		− log(\sigma(\bm{u}_{o}^{T} \bm{v}_{c})) - \sum\limits_{k=1}^{K} log(\sigma(-\bm{u}_{k}^{T} \bm{v}_{c}))
+\end{align}
+
+\noindent where $\sigma(\cdot)$ is the sigmoid function. \\
+
+\noindent \textit{After you’ve done this, describe with one sentence why this cost function is much more efficient to compute than the softmax-CE loss (you could provide a speed-up ratio, i.e. the runtime of the softmax-CE loss divided by the runtime of the negative sampling loss).} \\
+
+
+\noindent \textbf{Answer:} \\
+
+\noindent Let $z_{j} = \bm{u}_{j}^{T} \bm{v}_{c}$:
+
+\begin{align}
+	\frac{\partial J}{\partial z_{j}} &= %
+		\left\{
+			\begin{array}{ll}
+				 \sigma(\bm{u}_{j}^{T} \bm{v}_{c}) - 1 & \mbox{if } j = o \\ 
+				 \sigma(\bm{u}_{j}^{T} \bm{v}_{c}) 	   & \mbox{if } j \in \bm{K}
+			\end{array}
+		\right. \nonumber 
+\end{align}
+
+\noindent Then we can separate out the partials for $\bm{u}_{j}$ and $\bm{v}_{c}$.
+
+\begin{align}
+	\frac{\partial J}{\partial \bm{u}_{o}} &= %
+		\frac{\partial J}{\partial z_{j}} \times %
+			\frac{ \partial z_{j} }{ \partial \bm{u}_{o} } \nonumber \\
+		%
+		&= (\sigma(\bm{u}_{o}^{T} \bm{v}_{c}) - 1) \bm{v}_{c} \nonumber \\
+	%
+	\frac{\partial J}{\partial \bm{u}_{k}} &= %
+			\frac{\partial J}{\partial z_{j}} \times %
+				\frac{ z_{j} }{ \partial \bm{u}_{k} } \nonumber \\
+		%
+		&= -(\sigma(-\bm{u}_{k}^{T} \bm{v}_{c}) - 1) \bm{v}_{c} \mbox{  for all } k \in \bm{K} \nonumber
+\end{align}
+
+\begin{align}
+	\frac{\partial J}{\partial \bm{v}_{c}} &= %
+		\frac{\partial J}{\partial z_{j}} \times %
+			\frac{ \partial z_{j}}{ \partial \bm{v}_{c} } \nonumber \\
+		%
+		&= (\sigma(\bm{u}_{o}^{T} \bm{v}_{c}) -1) \bm{u}_{o} - %
+			\sum\limits_{k=1}^{K} (\sigma(- \bm{u}_{k}^{T} \bm{v}_{c}) - 1) \bm{u}_{k} \nonumber
+\end{align}
+
+
+\noindent This is faster than the original cross entropy loss because we are no longer deriving the gradients $\forall w_{j} \in W$. Instead, we are only evaluating the gradients for $[w_{o}, w_{k},\dots,w_{K}]$. 
+
+
 
 
 
