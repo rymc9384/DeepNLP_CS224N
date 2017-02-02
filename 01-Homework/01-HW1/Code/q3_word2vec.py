@@ -66,7 +66,8 @@ def softmaxCostAndGradient(predicted, target, outputVectors, dataset):
     """
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    yhat = softmax(predicted)
+
     ### END YOUR CODE
 
     return cost, gradPred, grad
