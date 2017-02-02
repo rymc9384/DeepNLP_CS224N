@@ -14,3 +14,5 @@
 \contentsline {section}{\numberline {3.1}(a)~ Context Word Gradients (3 pts)}{8}{section.3.1}
 \contentsline {section}{\numberline {3.2}(b)~ Output Word Gradients (3 pts)}{9}{section.3.2}
 \contentsline {section}{\numberline {3.3}(c)~ Repeat Gradients with Negative Sampling Loss (6 pts)}{9}{section.3.3}
+\contentsline {section}{\numberline {3.4}(d)~ Skip-gram and CBOW Gradients (8 pts)}{10}{section.3.4}
+\contentsline {section}{\numberline {3.5}(e)~ Word2Vec with SGD Code (12 pts)}{11}{section.3.5}

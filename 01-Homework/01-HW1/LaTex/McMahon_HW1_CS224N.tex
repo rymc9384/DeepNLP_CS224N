@@ -409,6 +409,84 @@ Hint: It will be helpful to use notation from question 2. For instance, letting 
 \noindent This is faster than the original cross entropy loss because we are no longer deriving the gradients $\forall w_{j} \in W$. Instead, we are only evaluating the gradients for $[w_{o}, w_{k},\dots,w_{K}]$. 
 
 
+\vskip5em
+
+
+%----------------------
+\subproblem{d}{Skip-gram and CBOW Gradients (8 pts)}
+\textit{Derive gradients for all of the word vectors for skip-gram and CBOW given the previous parts and given a set of context words [word$_{c−m}$ ,...,word$_{c−1}$ ,word$_{c}$ ,word$_{c+1}$ ,...,word$_{c+m}$ ], where $m$ is the context size. Denote the “input” and “output” word vectors for word $k$ as $v_{k}$ and $u_{k}$ respectively.} \\
+
+\noindent \textit{Hint: Feel free to use $F(\bm{o}, \bm{v}_{c})$ (where $\bm{o}$ is the expected word) as a placeholder for the $J_{softmax-CE}(\bm{o},\bm{v}_{c},\dots)$ or $J_{neg-sample}(\bm{o},\bm{v}_{c},\dots)$ cost functions in this part -- you'll see that this is a useful abstraction for the coding part. That is, your solution may contain terms of the form $\frac{\partial F(\bm{o}, \bm{v}_{c})}{\partial \dots}$.} \\
+%
+\noindent \textit{Recall that for skip-gram, the cost for a context centered around $c$ is }
+%
+\begin{align}
+	J_{skip-gram}(word_{c-m \dots c+m}) &= %
+		\sum\limits_{-m \leq j \leq m, j \ne 0} F(\bm{w}_{c+j}, \bm{v}_{c}) 
+\end{align}
+\noindent \textit{where $\bm{w}_{c+j}$ refers to the word at the $j-$th index from the center.} \\
+
+\noindent \textit{CBOW is slightly different. Instead of using $\bm{v}_{c}$ as the predicted vector, we use $\hat{\bm{v}}$ defined below. For (a simpler variant of) CBOW, we sum up the input word vectors in the context}
+%
+\begin{align}
+	\hat{\bm{v}} &= \sum\limits_{-m \leq j \leq m, j \ne 0} \bm{v}_{c+j}
+\end{align}
+\noindent then the CBOW cost is
+%
+\begin{align}
+	J_{CBOW}(word_{c-m \dots c+m}) &= F(\bm{w}_{c}, \hat{\bm{v}})
+\end{align}
+
+\noindent \textit{Note: To be consistent with the $\hat{\bm{v}}$ notation such as for the code portion, for skip-gram $\hat{\bm{v}} = \bm{v}_{c}$.} \\
+
+
+\noindent \textbf{Answer:} \\
+
+\noindent For the skip-gram model, we can show that (for a given context window) the gradients are equal to:
+%
+\begin{align}
+	\frac{J_{skip-gram}(word_{c-m \dots c+m})}{\partial \bm{U}} &= %
+		\sum\limits_{-m \leq j \leq m, j \ne 0} \frac{\partial F(\bm{w}_{c+j}, \bm{v}_{c})}{\partial \bm{U}} \nonumber \\
+	%
+	\frac{J_{skip-gram}(word_{c-m \dots c+m})}{\partial \bm{v}_{c}} &= %
+		\sum\limits_{-m \leq j \leq m, j \ne 0} \frac{\partial F(\bm{w}_{c+j}, \bm{v}_{c})}{\partial \bm{v}_{c}} \nonumber \\
+	%
+	\frac{J_{skip-gram}(word_{c-m \dots c+m})}{\partial \bm{v}_{j}} &= 0, \forall j\ne c \nonumber
+\end{align}
+
+
+\noindent For the CBOW model, alternatively, the gradients are equal to:
+%
+\begin{align}
+	\frac{J_{CBOW}(word_{c-m \dots c+m})}{\partial \bm{U}} &= %
+		\frac{\partial F(\bm{w}_{c}, \hat{\bm{v}})}{\partial \bm{U}} \nonumber \\
+	%
+	\frac{J_{CBOW}(word_{c-m \dots c+m})}{\partial \bm{v}_{j}} &= %
+		\frac{\partial F(\bm{w}_{c}, \hat{\bm{v}})}{\partial \hat{\bm{v}}}, \forall (j \ne c) \in \{c-m \dots c+m\}  \nonumber \\
+	%
+	\frac{J_{CBOW}(word_{c-m \dots c+m})}{\partial \bm{v}_{j}} &= 0, %
+		\forall (j \ne c) \notin \{c-m \dots c+m\}  \nonumber
+\end{align}
+%
+\noindent The qualifying indexes for the latter two equations are essentially saying ``where $j$ is in the range $\{c-m \dots c+m\}$, if the middle term ($c-0$) is removed''; and then the same thing, but ``where $j$ is not in that range''.
+
+
+\vskip5em
+
+
+
+%----------------------
+\subproblem{e}{Word2Vec with SGD Code (12 pts)}
+\textit{In this part you will implement the word2vec models and train your own word vectors
+with stochastic gradient descent (SGD). First, write a helper function to normalize rows of a matrix in}
+\verb|q3_word2vec.py|. \textit{In the same file, fill in the implementation for the softmax and negative sampling cost and gradient functions. Then, fill in the implementation of the cost and gradient functions for the skip-gram model. When you are done, test your implementation by running} \verb|python q3_word2vec.py|.
+\textit{Note: If you choose not to implement CBOW (part h), simply remove the} \verb|NotImplementedError| \textit{so that your tests will complete.} \\
+
+
+\noindent \textbf{Answer:} \\
+
+\noindent See code: $\sim$\verb|/code/q3_word2vec.py|.
+
 
 
 
