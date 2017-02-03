@@ -66,8 +66,25 @@ def softmaxCostAndGradient(predicted, target, outputVectors, dataset):
     """
 
     ### YOUR CODE HERE
-    yhat = softmax(predicted)
 
+    ## Gradient for $\hat{\bm{v}}$:
+
+    #  Calculate the predictions:
+    vhat = predicted
+    z = np.dot(outputVectors,vhat)
+    preds = softmax(z)
+    
+    #  Calculate the cost:
+    cost = -np.log(preds[target])
+    
+    #  Gradients
+    z = preds.copy()
+    z[target] -= 1.0
+    
+    grad = np.outer(z, vhat)   
+    gradPred = np.dot(outputVectors.T, z)
+
+     
     ### END YOUR CODE
 
     return cost, gradPred, grad
@@ -105,7 +122,21 @@ def negSamplingCostAndGradient(predicted, target, outputVectors, dataset,
     indices.extend(getNegativeSamples(target, dataset, K))
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    grad = np.zeros(outputVectors.shape)
+    gradPred = np.zeros(predicted.shape)
+    cost = 0
+    z = sigmoid(np.dot(outputVectors[target], predicted))
+    
+    cost -= np.log(z)
+    grad[target] += predicted * (z-1.0)
+    gradPred += outputVectors[target] * (z-1.0)
+
+    for k in xrange(K):
+        samp = dataset.sampleTokenIdx()
+        z = sigmoid(np.dot(outputVectors[samp], predicted))
+        cost -= np.log(1.0 - z)
+        grad[samp] += predicted * z
+        gradPred += outputVectors[samp] * z
     ### END YOUR CODE
 
     return cost, gradPred, grad
@@ -140,7 +171,16 @@ def skipgram(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     gradOut = np.zeros(outputVectors.shape)
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    cword_idx = tokens[currentWord]
+    vhat = inputVectors[cword_idx]
+    
+    for j in contextWords:
+        u_idx = tokens[j]
+        c_cost, c_grad_in, c_grad_out = \
+            word2vecCostAndGradient(vhat, u_idx, outputVectors, dataset)
+        cost += c_cost
+        gradIn[cword_idx] += c_grad_in
+        gradOut += c_grad_out
     ### END YOUR CODE
 
     return cost, gradIn, gradOut
@@ -164,7 +204,7 @@ def cbow(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     gradOut = np.zeros(outputVectors.shape)
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    #raise NotImplementedError
     ### END YOUR CODE
 
     return cost, gradIn, gradOut
