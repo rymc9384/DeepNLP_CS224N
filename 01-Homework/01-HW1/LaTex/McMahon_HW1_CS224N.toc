@@ -16,3 +16,5 @@
 \contentsline {section}{\numberline {3.3}(c)~ Repeat Gradients with Negative Sampling Loss (6 pts)}{9}{section.3.3}
 \contentsline {section}{\numberline {3.4}(d)~ Skip-gram and CBOW Gradients (8 pts)}{10}{section.3.4}
 \contentsline {section}{\numberline {3.5}(e)~ Word2Vec with SGD Code (12 pts)}{11}{section.3.5}
+\contentsline {section}{\numberline {3.6}(f)~ SGD Code (4 pts)}{11}{section.3.6}
+\contentsline {section}{\numberline {3.7}(g)~ Train Vectors on Stanford Sentiment Treebank (4 pts)}{11}{section.3.7}
