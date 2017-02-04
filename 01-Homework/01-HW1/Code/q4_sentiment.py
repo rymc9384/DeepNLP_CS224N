@@ -10,9 +10,9 @@ Created on Sat Feb 04 11:53:19 2017
 import argparse
 import numpy as np
 import matplotlib
-matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import itertools
+matplotlib.use('agg')
 
 from utils.treebank import StanfordSentiment
 import utils.glove as glove
@@ -56,7 +56,10 @@ def getSentenceFeatures(tokens, wordVectors, sentence):
     sentVector = np.zeros((wordVectors.shape[1],))
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    for s in sentence:
+        sentVector += wordVectors[tokens[s],:]
+        
+    sentVector *= 1.0/len(sentence)
     ### END YOUR CODE
 
     assert sentVector.shape == (wordVectors.shape[1],)
@@ -68,9 +71,10 @@ def getRegularizationValues():
 
     Return a sorted list of values to try.
     """
-    values = None   # Assign a list of floats in the block below
+    values = []   # Assign a list of floats in the block below
     ### YOUR CODE HERE
-    raise NotImplementedError
+    for i in range(1,6):
+        values.append(1.0/(i**2))
     ### END YOUR CODE
     return sorted(values)
 
@@ -94,7 +98,11 @@ def chooseBestModel(results):
     bestResult = None
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    max_dev = 0
+    for r in results:
+        if r['dev'] > max_dev:
+            max_dev = r['dev']
+            bestResult = r
     ### END YOUR CODE
 
     return bestResult

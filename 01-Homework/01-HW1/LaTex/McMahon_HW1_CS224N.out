@@ -17,3 +17,8 @@
 \BOOKMARK [1][-]{section.3.5}{\(e\) \040Word2Vec with SGD Code \(12 pts\)}{chapter.3}% 17
 \BOOKMARK [1][-]{section.3.6}{\(f\) \040SGD Code \(4 pts\)}{chapter.3}% 18
 \BOOKMARK [1][-]{section.3.7}{\(g\) \040Train Vectors on Stanford Sentiment Treebank \(4 pts\)}{chapter.3}% 19
+\BOOKMARK [1][-]{section.3.8}{\(h\) \040CBOW \(Extra Credit: 2 pts\)}{chapter.3}% 20
+\BOOKMARK [0][-]{chapter.4}{Problem 4: Sentiment Analysis \(20 pts\)}{}% 21
+\BOOKMARK [1][-]{section.4.1}{\(a\) \040Sentence Features \(2 pts\)}{chapter.4}% 22
+\BOOKMARK [1][-]{section.4.2}{\(b\) \040Purpose of Regularization \(1 pt\)}{chapter.4}% 23
+\BOOKMARK [1][-]{section.4.3}{\(c\) \040Purpose of Regularization \(1 pt\)}{chapter.4}% 24

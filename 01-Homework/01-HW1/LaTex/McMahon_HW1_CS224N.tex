@@ -487,6 +487,8 @@ with stochastic gradient descent (SGD). First, write a helper function to normal
 
 \noindent See code: $\sim$\verb|/code/q3_word2vec.py|.
 
+\vskip5em
+
 
 %----------------------
 \subproblem{f}{SGD Code (4 pts)}
@@ -498,6 +500,9 @@ with stochastic gradient descent (SGD). First, write a helper function to normal
 \noindent See code: $\sim$\verb|/code/q3_sgd.py|.
 
 
+
+
+\newpage
 %----------------------
 \subproblem{g}{Train Vectors on Stanford Sentiment Treebank (4 pts)}
 \textit{Show time! Now we are going to load some real data and train word vectors with everything you just implemented! We are going to use the Stanford Sentiment Treebank (SST) dataset to train word vectors, and later apply them to a simple sentiment analysis task. You will need to fetch the datasets first. To do this, run }\verb|sh get_datasets.sh|. \textit{Test your implementation by running} \verb|python q3_sgd.py|. \textit{There is no additional code to write for this part; just run }\verb|python q3_run.py| \\
@@ -506,6 +511,78 @@ with stochastic gradient descent (SGD). First, write a helper function to normal
 \noindent \textbf{Answer:} \\
 
 \noindent See code: $\sim$\verb|/code/q3_sgd.py|.
+
+\vskip5em
+
+
+
+
+%----------------------
+\subproblem{h}{CBOW (Extra Credit: 2 pts)}
+\textit{Implement the CBOW model in }\verb|q3_word2vec.py|. \textit{Note: this part is optional but the gradient derivations for CBOW in part (d) are not!} \\
+
+
+\noindent \textbf{Answer:} \\
+
+\noindent Not implemented (currently).
+
+
+
+
+\newpage
+%-------------------------------------
+\problem{4: Sentiment Analysis (20 pts)}
+%-------------------------------------
+
+\textit{Now, with the word vectors you trained, we are going to perform a simple sentiment analysis. For each sentence in the Stanford Sentiment Treebank dataset, we are going to use the average of all the word vectors in that sentence as its feature, and try to predict the sentiment level of the said sentence. The sentiment level of the phrases are represented as real values in the original dataset, here we'll just use five classes:} \\
+
+``very negative'' ($--$); ``negative'' ($-$); ``neutral''; ``positive'' ($+$); ``very positive'' ($++$) \\
+
+\noindent \textit{which are represented by 0 to 4 in the code, respectively. For this part, you will learn to train a softmax classifier, and perform train/dev validation to improve generalization.} \\
+
+\vskip5em
+
+
+
+%----------------------
+\subproblem{a}{Sentence Features (2 pts)}
+\textit{Implement a sentence featurizer. A simple way of representing a sentence is taking the average of the vectors of the words in the sentence. Fill in the implementation in }\verb|q4_sentiment.py|. \\
+
+
+\noindent \textbf{Answer:} \\
+
+\noindent See code: $\sim$\verb|/code/q4_sentiment.py|.
+
+\vskip5em
+
+
+
+%----------------------
+\subproblem{b}{Purpose of Regularization (1 pt)}
+\textit{Explain in at most two sentences why we want to introduce regularization when doing classification (in fact, most machine learning tasks).} \\
+
+\noindent \textbf{Answer:} \\
+
+\noindent Regularization serves the purpose of increasing the generalizability of a trained model to new data. Constraining our parameter estimates using a(set of) penalty(penalties) helps mitigate issues related to over-fitting.
+
+
+\vskip5em
+
+
+
+%----------------------
+\subproblem{c}{Purpose of Regularization (1 pt)}
+\textit{Fill in the hyperparameter selection code in }\verb|q4_sentiment.py| \textit{to search for the “optimal” regularization parameter. Attach your code for }\verb|chooseBestModel| \textit{to your written write-up. You should be able to attain at least 36.5\% accuracy on the dev and test sets using the pre-trained vectors in part (d).} \\
+
+
+\noindent \textbf{Answer:} \\
+
+\noindent See code: $\sim$\verb|/code/q4_sentiment.py|.
+
+\vskip5em
+
+
+
 
 
 \end{document}

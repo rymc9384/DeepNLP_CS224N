@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.9.19)  3 FEB 2017 16:02
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.9.19)  4 FEB 2017 18:29
 entering extended mode
 **McMahon_HW1_CS224N.tex
 
@@ -1873,33 +1873,98 @@ Underfull \hbox (badness 10000) in paragraph at lines 486--487
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 493--494
+Underfull \hbox (badness 10000) in paragraph at lines 495--496
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 496--497
+Underfull \hbox (badness 10000) in paragraph at lines 498--499
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 503--504
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 506--507
-
- []
-
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 511.
 [11]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 511.
+Underfull \hbox (badness 10000) in paragraph at lines 508--509
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 511--512
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 522--523
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 525--526
+
+ []
+
+[12]
+Chapter 4.
+
+Underfull \hbox (badness 10000) in paragraph at lines 537--538
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 539--540
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 541--542
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 549--550
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 552--553
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 562--563
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 564--565
+
+ []
+
+Missing character: There is no ‚ in font bchri7t!
+Missing character: There is no Ä in font bchri7t!
+Missing character: There is no ú in font bchri7t!
+Missing character: There is no ‚ in font bchri7t!
+Missing character: There is no Ä in font bchri7t!
+Missing character: There is no ù in font bchri7t!
+
+Underfull \hbox (badness 10000) in paragraph at lines 575--576
+
+ []
+
+[13
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 578--579
+
+ []
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 588.
+[14]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 588.
 
 (C:\Users\rbm166\Dropbox\NeuralNets\DeepNLP_CS224N\01-Homework\01-HW1\LaTex\McM
 ahon_HW1_CS224N.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 511.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 511.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 588.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 588.
 
 
 Package rerunfilecheck Warning: File `McMahon_HW1_CS224N.out' has changed.
@@ -1907,15 +1972,15 @@ Package rerunfilecheck Warning: File `McMahon_HW1_CS224N.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `McMahon_HW1_CS224N.out':
-(rerunfilecheck)             Before: FEC0F58317644AFA63C2DCA4DB100AEB;1498
-(rerunfilecheck)             After:  E7A65BDE3ED8867E8FF7674676E77CF0;1686.
+(rerunfilecheck)             Before: 577F982E0E479168490B6C943B004586;1924
+(rerunfilecheck)             After:  07D48A338D06A71E861584A38556B72D;2118.
  ) 
 Here is how much of TeX's memory you used:
- 25397 strings out of 493921
- 423601 string characters out of 3147279
+ 25422 strings out of 493921
+ 423840 string characters out of 3147279
  588169 words of memory out of 3000000
- 28004 multiletter control sequences out of 15000+200000
- 53400 words of font info for 156 fonts, out of 3000000 for 9000
+ 28009 multiletter control sequences out of 15000+200000
+ 54488 words of font info for 164 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  63i,19n,57p,1022b,361s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Program File
@@ -1936,9 +2001,9 @@ amsfonts/cm/cmtt12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts
 pe1/matha12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/mathabx-type1/m
 atha8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/mathabx-type1/mathx10
 .pfb>
-Output written on McMahon_HW1_CS224N.pdf (11 pages, 217245 bytes).
+Output written on McMahon_HW1_CS224N.pdf (14 pages, 226733 bytes).
 PDF statistics:
- 238 PDF objects out of 1000 (max. 8388607)
- 41 named destinations out of 1000 (max. 500000)
- 28821 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 278 PDF objects out of 1000 (max. 8388607)
+ 49 named destinations out of 1000 (max. 500000)
+ 28861 words of extra memory for PDF output out of 29859 (max. 10000000)
 
