@@ -1,3 +1,7 @@
+# Numpy and Datasets
+*.npy
+datasets/
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
