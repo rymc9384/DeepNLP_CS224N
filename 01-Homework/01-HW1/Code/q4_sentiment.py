@@ -10,9 +10,9 @@ Created on Sat Feb 04 11:53:19 2017
 import argparse
 import numpy as np
 import matplotlib
+matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import itertools
-matplotlib.use('agg')
 
 from utils.treebank import StanfordSentiment
 import utils.glove as glove

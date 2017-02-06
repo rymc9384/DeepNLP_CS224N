@@ -584,5 +584,57 @@ with stochastic gradient descent (SGD). First, write a helper function to normal
 
 
 
+%----------------------
+\subproblem{d}{Pretrained vs New Vectors (3 pts)}
+\textit{Run} \verb|python q4_sentiment.py --yourvectors| \textit{to train a model using your word vectors from q3. Now, run} \verb|python q4_sentiment.py --pretrained|\textit{ to train a model using pretrained GloVe vectors (on Wikipedia data). Compare and report the best train, dev, and test accuracies. Why do you think the pretrained vectors did better? Be specific and justify with 3 distinct reasons.} \\
+
+
+\noindent \textbf{Answer:} \\
+
+\noindent \textit{Note: Both tables rely on a ``One-versus-Rest'' logistic classifier. This is the default assignment code.} \\
+
+\noindent With our newly trained vectors, our best out-of-sample accuracy is roughly 29.3\%: for the fine-grained Stanford Sentiment Treebank dataset. \\
+
+
+\begin{table}[!htbp]
+\centering
+\caption{Sentiment Accuracy -- New Vectors}
+\label{tab:newvectors_sentiment}
+\begin{tabular}{@{}r|lll@{}}
+\toprule
+\textbf{Inverse Regularization} & \multicolumn{3}{c}{\textbf{Accuracy}}               \\ 
+\textbf{Strength} (L2)          & \textit{Train}  & \textit{Dev}    & \textit{Test}   \\ \midrule
+25                              & \textbf{30.314} & \textbf{30.972} & \textbf{29.367} \\
+16                              & 30.302          & \textbf{30.972} & 28.869          \\
+9                               & 30.22           & 30.79           & 28.597          \\
+4                               & 30.091          & 30.518          & 27.511          \\
+1                               & 28.874          & 27.611          & 25.973          \\ \bottomrule
+\end{tabular}
+\end{table}
+
+
+\noindent In comparison, when we move to using the pretrained GloVe vectors, our best out-of-sample accuracy jumps to approximately 37.5\%. This constitutes a tremendous improvement over our newly trained vectors. Though, if this were done properly (i.e., not running on the test set each time) we would have concluded that the inverse regularization strength of 16 (row 2 in Table~\ref{tab:glove_sentiment}) was best -- not 25.
+
+
+\begin{table}[!htbp]
+\centering
+\caption{Sentiment Accuracy -- Pretrained GloVe}
+\label{tab:glove_sentiment}
+\begin{tabular}{@{}r|lll@{}}
+\toprule
+\textbf{Inverse Regularization} & \multicolumn{3}{c}{\textbf{Accuracy}}   		   \\ 
+\textbf{Strength} (L2)  		& \textit{Train} & \textit{Dev}   & \textit{Test}  \\ \midrule
+25                              & 39.817         & \textbf{36.331}& \textbf{37.511}\\
+16                              & \textbf{39.864}& \textbf{36.331}& 37.376         \\
+9                               & 39.747         & 36.240         & 37.195         \\
+4                               & 39.654         & 36.603         & 37.195         \\
+1                               & 39.525         & 36.603         & 37.330         \\ \bottomrule
+\end{tabular}
+\end{table}
+
+
+\noindent There are lots of potential reasons for the GloVe vectors to outperform our newly trained ones. One is that we simply were training our vectors on (far) less data than was used to generate the GloVe vectors. Additionally, while our vectors are only 10-dimensional, the pretrained vectors are $D = 50$. This \textit{should} result in ``better'' embeddings. And finally, the classifier gets 50 features with the pretrained vectors, but only 10 (less informative) features with our newly generated measurements. 
+
+
 
 \end{document}

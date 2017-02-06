@@ -23,3 +23,4 @@
 \contentsline {section}{\numberline {4.1}(a)~ Sentence Features (2 pts)}{13}{section.4.1}
 \contentsline {section}{\numberline {4.2}(b)~ Purpose of Regularization (1 pt)}{13}{section.4.2}
 \contentsline {section}{\numberline {4.3}(c)~ Purpose of Regularization (1 pt)}{14}{section.4.3}
+\contentsline {section}{\numberline {4.4}(d)~ Pretrained vs New Vectors (3 pts)}{14}{section.4.4}
