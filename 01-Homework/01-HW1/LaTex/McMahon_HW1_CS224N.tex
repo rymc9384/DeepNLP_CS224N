@@ -3,6 +3,7 @@
 \usepackage{cancel}
 \usepackage{cleveref}
 \usepackage{titlesec}
+\usepackage{hyperref}
 %\colorsections
 %\bluelinks
 \newcommand{\problem}[1]{\chapter{Problem #1}}
@@ -22,6 +23,8 @@
 
 \titleformat{\chapter}[display]
   {\normalfont\bfseries}{}{0pt}{\LARGE}
+  
+\graphicspath{ {../Code/} }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
@@ -613,7 +616,7 @@ with stochastic gradient descent (SGD). First, write a helper function to normal
 \end{table}
 
 
-\noindent In comparison, when we move to using the pretrained GloVe vectors, our best out-of-sample accuracy jumps to approximately 37.5\%. This constitutes a tremendous improvement over our newly trained vectors. Though, if this were done properly (i.e., not running on the test set each time) we would have concluded that the inverse regularization strength of 16 (row 2 in Table~\ref{tab:glove_sentiment}) was best -- not 25.
+\noindent In comparison, when we move to using the pretrained GloVe vectors, our best out-of-sample accuracy jumps to approximately 37.5\%. This constitutes a tremendous improvement over our newly trained vectors. Though, if this were done properly (i.e., not running on the test set each time) we would not have concluded that the inverse regularization strength of 25 (row 2 in Table~\ref{tab:glove_sentiment}) was best -- not 25.
 
 
 \begin{table}[!htbp]
@@ -624,17 +627,91 @@ with stochastic gradient descent (SGD). First, write a helper function to normal
 \toprule
 \textbf{Inverse Regularization} & \multicolumn{3}{c}{\textbf{Accuracy}}   		   \\ 
 \textbf{Strength} (L2)  		& \textit{Train} & \textit{Dev}   & \textit{Test}  \\ \midrule
-25                              & 39.817         & \textbf{36.331}& \textbf{37.511}\\
-16                              & \textbf{39.864}& \textbf{36.331}& 37.376         \\
+25                              & 39.817         & 36.331		  & \textbf{37.511}\\
+16                              & \textbf{39.864}& 36.331		  & 37.376         \\
 9                               & 39.747         & 36.240         & 37.195         \\
-4                               & 39.654         & 36.603         & 37.195         \\
-1                               & 39.525         & 36.603         & 37.330         \\ \bottomrule
+4                               & 39.654         & \textbf{36.603}& 37.195         \\
+1                               & 39.525         & \textbf{36.603}& 37.330         \\ \bottomrule
 \end{tabular}
 \end{table}
 
 
 \noindent There are lots of potential reasons for the GloVe vectors to outperform our newly trained ones. One is that we simply were training our vectors on (far) less data than was used to generate the GloVe vectors. Additionally, while our vectors are only 10-dimensional, the pretrained vectors are $D = 50$. This \textit{should} result in ``better'' embeddings. And finally, the classifier gets 50 features with the pretrained vectors, but only 10 (less informative) features with our newly generated measurements. 
 
+
+\vskip5em
+
+
+
+
+%----------------------
+\subproblem{e}{Accuracy vs. Regularization (4 pts)}
+\textit{Plot the classification accuracy on the train and dev set with respect to the regularization
+value for the pretrained GloVe vectors, using a logarithmic scale on the x-axis. This should have been
+done automatically. Include \textbf{q4\_reg\_v\_acc.png} in your homework write up. Briefly explain in at
+most three sentences what you see in the plot.} \\
+
+
+\noindent \textbf{Answer:}\\
+
+\begin{figure}[!htbp]\centering
+	\label{figure:acc_vs_reg}
+	\caption{Accuracy vs. Regularization}
+	\includegraphics[scale=0.7]{q4_reg_v_acc.png}
+\end{figure}
+
+\noindent In Figure~\ref{figure:acc_vs_reg} we can see that as we increase the size of the regularization coefficient, the in-sample accuracy (the ``train'' line in blue) decreases. However, this same process increases the model's accuracy in the development set. This is what we expect to see: the larger penalty is decreasing the model's out-of-sample bias by reducing the degree to which the training data are being ``memorized''. 
+
+
+\newpage
+
+
+%----------------------
+\subproblem{f}{Confusion Matrix (4 pts)}
+\textit{We will now analyze errors that the model makes (with pretrained GloVe vectors). When you ran} \newline\verb|python q4_sentiment.py --pretrained|, \textit{two files should have been generated. Take a look at}\newline \verb|q4_dev_conf.png| \textit{\textbf{and include it in your homework writeup}. Interpret the confusion matrix in at most three sentences.} \\
+
+
+\textbf{Answer:}\\
+
+\begin{figure}[!htbp]\centering
+	\label{figure:confusionmatrix}
+	\caption{Confusion Matrix (Development Set)}
+	\includegraphics[scale=0.7]{q4_dev_conf.png}
+\end{figure}
+
+\noindent The confusion matrix shows us that the model has a difficult time predicting extremes on either end, even though they are fairly common in the training set. It also shows us that predicting the neutral category is difficult; the model tends to assign these cases to the ``negative'' class slightly more often than the ``positive'' class. Finally, while incorrect signs (in the binary sense) are present throughout, it is reassuring that in no instance did we assign a ``very positive(negative)'' sentence to the ``very negative(positive)'' class. \\
+
+\noindent {\small PS. Apologies for the graphic being cut-off; it's not a {\LaTeX} problem, but is like that in the raw file as well.}
+
+
+\newpage 
+
+%----------------------
+\subproblem{g}{Error Types \& Features (4 pts)}
+\textit{Next, take a look at} \verb|q4_dev_pred.txt|. \textit{Choose 3 examples where your classifier made errors
+and briefly explain the error and what features the classifier would need to classify the example correctly
+(1 sentence per example). Try to pick examples with different reasons.} \\
+
+
+\noindent \textbf{Answer:} \\
+
+\begin{enumerate}
+	\item ``\verb|and if you 're not nearly moved to tears by a couple of scenes ,| \newline \verb|you 've got ice water in your veins .|''
+	\subitem $\bullet$ True $= +$; Predicted $= -$
+	\subitem $\bullet$ In order to properly classify this sentence the model would need to have some feature about the idiom ``moved to tears'' being a positive phrase $w.r.t.$ film.
+	%
+	\item[] 
+	%
+	\item ``\verb|suffers from the lack of a compelling or comprehensible narrative .|''
+	\subitem $\bullet$ True $= +$; Predicted $= --$
+	\subitem $\bullet$ Here the issue is that ``compelling'' and ``comprehensible narrative'' are modified by the first word ``suffers''.
+	%
+	\item[]
+	%
+	\item ``\verb|it 's like watching a nightmare made flesh .|''
+	\subitem $\bullet$ True $= --$; Predicted $= +$
+	\subitem $\bullet$ This case is odd; a Google search brought up the full review in \textit{New York Magazine} by Peter Rainer (2002) in which the context suggests (to me) that the ``true'' label is incorrect. \footnote{\href{http://nymag.com/movies/articles/02/10/bloodysunday.htm}{You can see the full review by clicking here.}}
+\end{enumerate}
 
 
 \end{document}

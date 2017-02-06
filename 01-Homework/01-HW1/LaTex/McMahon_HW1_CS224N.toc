@@ -24,3 +24,6 @@
 \contentsline {section}{\numberline {4.2}(b)~ Purpose of Regularization (1 pt)}{13}{section.4.2}
 \contentsline {section}{\numberline {4.3}(c)~ Purpose of Regularization (1 pt)}{14}{section.4.3}
 \contentsline {section}{\numberline {4.4}(d)~ Pretrained vs New Vectors (3 pts)}{14}{section.4.4}
+\contentsline {section}{\numberline {4.5}(e)~ Accuracy vs. Regularization (4 pts)}{15}{section.4.5}
+\contentsline {section}{\numberline {4.6}(f)~ Confusion Matrix (4 pts)}{16}{section.4.6}
+\contentsline {section}{\numberline {4.7}(g)~ Error Types \& Features (4 pts)}{17}{section.4.7}
