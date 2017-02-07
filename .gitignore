@@ -1,6 +1,7 @@
 # Numpy and Datasets
 *.npy
 datasets/
+Code/data
 
 # Windows image file caches
 Thumbs.db
