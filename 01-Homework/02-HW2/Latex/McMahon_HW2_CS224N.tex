@@ -71,6 +71,23 @@
 
 
 
+%----------------------
+\subproblem{b}{Cross-Entropy Loss in Tensorflow (5 pts)}
+\textit{Implement the cross-entropy loss using TensorFlow in }\verb|q1_softmax.py|. \textit{Remember that}
+
+\begin{align}
+	CE(\bm{y},\hat{\bm{y}}) &= - \sum_{i=1}^{N_{c}} y_{i} log(\hat{y}_{i})
+\end{align}
+
+\noindent \textit{where $\bm{y} \in \mathbb{R}^{N_{c}}$ is a one-hot label vector and $N_{c}$ is the number of classes. This loss is summed over all examples (rows) of a minibatch. Note that you may \textbf{not} use TensorFlow’s built-in cross-entropy functions for this question. You can run basic (non-exhaustive tests) by running }\verb|python q1_softmax.py|. \\
+
+
+\noindent \textbf{Answer:}\\
+
+\noindent See code: $\sim$\verb|/code/q1_softmax.py|.
+
+\vskip5em
+
 
 
 \end{document}
