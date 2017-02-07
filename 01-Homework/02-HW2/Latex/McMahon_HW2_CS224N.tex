@@ -92,13 +92,57 @@
 \newpage
 %----------------------
 \subproblem{c}{Placeholders and Feed Dictionaries (5 pts)}
-\textit{Carefully study the Model class in }\verb|model.py|. \textit{Briefly explain the purpose of placeholder variables and feed dictionaries in TensorFlow computations. Fill in the implementations for} \verb|add_placeholders|\textit{ and} \verb|create_feed_dict| \textit{in} \verb|q1_classifier.py|.\vskip1em
-\noindent \textit{\textbf{Hint:} Note that configuration variables are stored in the }\verb|Config| \textit{class. You will need to use these configurations variables in the code.} \vskip2em
+\textit{Carefully study the Model class in }\verb|model.py|. \textit{Briefly explain the purpose of placeholder variables and feed dictionaries in TensorFlow computations. Fill in the implementations for} \verb|add_placeholders|\textit{ and} \verb|create_feed_dict| \textit{in} \verb|q1_classifier.py|.
+%
+\vskip1em
+%
+\noindent \textit{\textbf{Hint:} Note that configuration variables are stored in the }\verb|Config| \textit{class. You will need to use these configurations variables in the code.} 
+%
+\vskip2em
 
 
 
 \noindent \textbf{Answer:} \\
 
+\noindent The purpose of placeholder variables and feed dictionaries is, in short, to improve computational efficiency. They allow us to specify the graph structure without supplying the actual data. By doing this, our model can be flexible to different training approaches (e.g., different mini-batch sizes). Specifically, the placeholders stand in for whatever data/values we want to use and the feed dictionaries tell the placeholders what data/values to use. \\
+
+\noindent Also, see code: $\sim$\verb|/code/q1_classifier.py|.
+
+\vskip5em
+
+
+
+
+%----------------------
+\subproblem{d}{Add Softmax and  Add CE Loss (5 pts)}
+\textit{Implement the transformation for a softmax classifier in the function }\verb|add_prediction_op|\textit{ in }\verb|q1_classifier.py|. \textit{Add cross-entropy loss in the function }\verb|add_loss_op| \textit{in the same file. Use the implementations from the earlier parts of the problem, \textbf{not} TensorFlow built-ins.} \\
+
+
+\noindent \textbf{Answer:}\\
+
+\noindent See code: $\sim$\verb|/code/q1_classifier.py|.
+
+
+\vskip5em
+
+
+
+
+%----------------------
+\subproblem{e}{Add Training Optimizer -- Gradient Descent (5 pts)}
+\textit{Fill in the implementation for }\verb|add_training_op| \textit{in }\verb|q1_classifier.py|. \textit{Explain how TensorFlow’s automatic differentiation removes the need for us to define gradients explicitly. Verify that your model is able to fit to synthetic data by running }\verb|q1_classifier.py| \textit{and making sure that the tests pass.}
+%
+\vskip1em
+%
+\noindent \textit{\textbf{Hint:} Make sure to use the learning rate specified in }\verb|Config|.
+%
+\vskip2em
+
+\noindent \textbf{Answer:} \\
+
 \noindent 
+
+
+
 
 \end{document}

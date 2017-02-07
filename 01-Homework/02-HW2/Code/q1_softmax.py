@@ -69,7 +69,7 @@ def cross_entropy_loss(y, yhat):
 
     ### YOUR CODE HERE
     l_yhat = tf.log(yhat)                   # log yhat
-    product = tf.to_float(y) * l_yhat       # multiply element-wise
+    product = tf.mul(tf.to_float(y), l_yhat)      # multiply element-wise
     out = tf.neg(tf.reduce_sum(product))    # negative summation to scalar
     ### END YOUR CODE
 
