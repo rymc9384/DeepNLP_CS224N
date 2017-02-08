@@ -123,10 +123,9 @@
 \noindent See code: $\sim$\verb|/code/q1_classifier.py|.
 
 
-\vskip5em
 
 
-
+\newpage
 
 %----------------------
 \subproblem{e}{Add Training Optimizer -- Gradient Descent (5 pts)}
@@ -140,7 +139,105 @@
 
 \noindent \textbf{Answer:} \\
 
-\noindent 
+\noindent TensorFlow's automatic differentiation works by representing a given model as a symbolic Directed Acyclic Graph (DAG). Using this DAG, we can break down an arbitrarily complex function into basic mathematical operations (e.g., $+$, $-$, $\times$, $\div$, $log$, $\dots$ etc.). Once this is done, TensorFlow is able to numerically calculate the necessary partial derivatives for the gradients using the chain-rule, which alleviates the need for us to define them ourselves. \\
+
+
+\noindent Also, see code: $\sim$\verb|/code/q1_classifier.py|.
+
+
+
+
+
+\newpage
+
+%-------------------------------------
+\problem{2: Neural Transition-Based Dependency Parsing (50 pts)}
+%-------------------------------------
+\textit{In this section, you’ll be implementing a neural-network based dependency parser. A dependency parser analyzes the grammatical structure of a sentence, establishing relationships between ``head'' words and words which modify those heads. Your implementation will be a \textbf{transition-based} parser, which incrementally builds up a parse one step at a time. At every step it maintains a partial parse, which is represented as follows:} 
+
+\begin{itemize}
+	\item \textit{A \textbf{stack} of words that are currently being processed.}
+	\item \textit{A \textbf{buffer} of words yet to be processed.}
+	\item \textit{A list of \textbf{dependencies} predicted by the parser.}
+\end{itemize}
+
+\noindent \textit{Initially, the stack only contains ROOT, the dependencies lists is empty, and the buffer contains all words of the sentence in order. At each step, the parse applies a \textbf{transition} to the partial parse until its buffer is empty and the stack is of size 1. The following transitions can be applied:}
+
+\begin{itemize}
+	\item \verb|SHIFT|: \textit{removes the first word from the buffer and pushes it onto the stack.}
+	\item \verb|LEFT-ARC|: \textit{marks the second (second most recently added) item on the stack as a dependent of the	first item and removes the second item from the stack.}
+	\item \verb|RIGHT-ARC|: \textit{marks the first (most recently added) item on the stack as a dependent of the second item and removes the first item from the stack}
+\end{itemize}
+
+\noindent \textit{Your parser will decide among transitions at each state using a neural network classifier. First, you will implement the partial parse representation and transition functions.} 
+
+
+
+\newpage
+
+%----------------------
+\subproblem{a}{Parsing Steps by Hand (6 pts)}
+\textit{Go through the sequence of transitions needed for parsing the sentence ``\textbf{I parsed this sentence correctly}''. The dependency tree for the sentence is shown below. At each step, give the configuration of the stack and buffer, as well as what transition was applied this step and what new dependency was added (if any). The first three steps are provided below as an example.} \\
+
+\noindent \textbf{NOTE: See assignment for table and tree.}  
+\vskip2em
+
+
+\noindent \textbf{Answer:} \\
+
+\begin{table}[!htbp]
+	\centering
+	\small
+\begin{tabular}{|l|l|l|l|}
+									&											& \textbf{new}			&						\\
+\textbf{stack} 						& \textbf{buffer}							& \textbf{dependency}	& \textbf{transition} 	\\ \toprule
+$[ROOT]$ 							& $[I, parsed, this, sentence, correctly]$  &  							& Initial Configuration \\ 
+$[ROOT, I]$ 						& $[parsed, this, sentence, correctly]$ 	&  							& \verb|SHIFT|  		\\ 
+$[ROOT, I, parsed]$ 				& $[this, sentence, correctly]$ 			&  							& \verb|SHIFT|  		\\ 
+$[ROOT, parsed]$ 					& $[this, sentence, correctly]$ 			& parsed $\rightarrow$ I 	& \verb|LEFT-ARC| 		\\ 
+$[ROOT, parsed, this]$				& $[sentence, correctly]$ 					&  							& \verb|SHIFT|  		\\ 
+$[ROOT, parsed, this, sentence]$	& $[correctly]$ 							&   						& \verb|SHIFT| 			\\ 
+$[ROOT, parsed, sentence]$ 			& $[correctly]$ 						& sentence $\rightarrow$ this	& \verb|LEFT-ARC| 		\\ 
+$[ROOT, parsed]$ 					& $[correctly]$ 						& parsed $\rightarrow$ sentence	& \verb|RIGHT-ARC| 		\\ 
+$[ROOT, parsed, correctly]$			& $[ ]$ 									&   						& \verb|SHIFT| 			\\ 
+$[ROOT, parsed]$ 					& $[ ]$ 								& parsed $\rightarrow$ correctly& \verb|RIGHT-ARC| 		\\ 
+$[ROOT]$ 							& $[ ]$ 									& ROOT $\rightarrow$ parsed & \verb|RIGHT-ARC| 		\\
+\end{tabular} 
+\end{table}
+
+\vskip5em
+
+
+
+%----------------------
+\subproblem{b}{Number of Steps to Parse (2 pts)}
+\textit{A sentence containing $n$ words will be parsed in how many steps (in terms of $n$)? Briefly explain why.}\\
+
+\noindent \textbf{Answer:} \\
+
+\noindent Assuming we have a grammatically well-formed sentence and need a first step from \verb|ROOT|:
+\begin{align}
+	n+2 \le \normalfont{Steps} \le n^{3} \nonumber
+\end{align}
+
+\noindent The lower bound exists because we need: 1) an arc from \verb|ROOT| to the sentence head, and 2) an arc between a subject and a verb. The $n$ is derived from all of the necessary shifts. Our upper bound comes from Eisner (1996) -- whose algorithm allows sub-sequences to be parsed independently of one another. 
+
+
+
+
+\newpage 
+
+%----------------------
+\subproblem{c}{Partial Parse Coding (6 pts)}
+\textit{Implement the} \verb|__init__| \textit{and} \verb|parse_step| \textit{functions in the} \verb|PartialParse| \textit{class in} \verb|q2_parser_transitions.py|. \textit{This implements the transition mechanics your parser will use. You can run basic (not-exhaustive) tests by running} \verb|python q2_parser_transitions.py|. \\ 
+
+
+\noindent \textbf{Answer:} \\
+
+\noindent See code: $\sim$\verb|/code/q2_parser_transitions.py|.
+
+
+
 
 
 
