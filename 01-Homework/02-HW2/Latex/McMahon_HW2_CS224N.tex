@@ -4,6 +4,9 @@
 \usepackage{cleveref}
 \usepackage{titlesec}
 \usepackage{hyperref}
+
+
+
 %\colorsections
 %\bluelinks
 \newcommand{\problem}[1]{\chapter{Problem #1}}
@@ -24,6 +27,9 @@
 \titleformat{\chapter}[display]
   {\normalfont\bfseries}{}{0pt}{\LARGE}
   
+
+
+
 \graphicspath{ {../Code/} }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -242,8 +248,39 @@ $[ROOT]$ 							& $[ ]$ 									& ROOT $\rightarrow$ parsed & \verb|RIGHT-ARC| 
 
 %----------------------
 \subproblem{d}{Minibatch Parsing (6 pts)}
+\textit{Our network will predict which transition should be applied next to a partial parse. We could use it to parse a single sentence by applying predicted transitions until the parse is complete. However, neural networks run much more efficiently when making predictions about batches of data at a time (i.e., predicting the next transition for many different partial parses simultaneously). We can parse sentences in minibatches with the following algorithm:}
+
+\begin{algorithm}
+	\caption{Minibatch Dependency Parsing}
+	\SetAlgoLined
+	\textbf{INPUT:} \emph{sentences}, a list of sentences to be parsed and \emph{model}, our model that makes parse decisions \
+	\BlankLine
+	\BlankLine
+	Initialize \emph{partial\_parses} as a list of partial parses, one for each sentence in \emph{sentences} \;
+	Initialize \emph{unfinished\_parses} as a shallow copy of \emph{partial\_parses} \;
+	\While{\text{unfinished\_parses} $\neq \emptyset$}{
+		Take the first \emph{batch\_size} parses in \emph{unfinished\_parses} as a minibatch \;
+		Use the \emph{model} to predict the next transition for each partial parse in the minibatch \;
+		Perform a parse step on each partial parse in the minibatch with its predicted transition \;
+		Remove the completed parses from \emph{unfinished\_parses} \;
+	}
+	\BlankLine
+	\BlankLine
+	\textbf{Return:} The \emph{dependencies} for each (now completed) parse in \emph{partial\_parses}
+\end{algorithm}
 
 
+\noindent \textit{Implement this algorithm in the} \verb|minibatch_parse| \textit{function in} \verb|q2_parser_transitions.py|. \textit{You can run basic (not-exhaustive) tests by running} \verb|python q2_parser_transitions.py|. \\
+
+\noindent \textit{Note: You will need} \verb|minibatch_parse| \textit{to be correctly implemented to evaluate the model you will build in part (h). However, you do not need it to train the model, so you should be able to complete most of part (h) even if} \verb|minibatch_parse| \textit{is not implemented yet.} 
+
+\vskip2em
+
+\noindent \textbf{Answer:} \\
+
+\noindent See code: $\sim$\verb|/code/q2_parser_transitions.py|.
+
+\vskip5em
 
 
 
