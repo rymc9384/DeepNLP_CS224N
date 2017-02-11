@@ -114,7 +114,7 @@
 
 \noindent Also, see code: $\sim$\verb|/code/q1_classifier.py|.
 
-\vskip5em
+\vskip2em
 
 
 
@@ -129,9 +129,9 @@
 \noindent See code: $\sim$\verb|/code/q1_classifier.py|.
 
 
+\vskip2em
 
 
-\newpage
 
 %----------------------
 \subproblem{e}{Add Training Optimizer -- Gradient Descent (5 pts)}
@@ -280,7 +280,76 @@ $[ROOT]$ 							& $[ ]$ 									& ROOT $\rightarrow$ parsed & \verb|RIGHT-ARC| 
 
 \noindent See code: $\sim$\verb|/code/q2_parser_transitions.py|.
 
-\vskip5em
+
+
+
+\newpage
+%----------------------
+\subproblem{N/A}{Description (for actual problem see Subproblem~\ref{prob:2e})}
+\textit{We are now going to train a neural network to predict, given the state of the stack, buffer, and dependencies, which transition should be applied next. First, the model extracts a feature vector representing the current state. We will be using the feature set presented in the original neural dependency parsing paper: ``A Fast and Accurate Dependency Parser using Neural Networks''.\footnote{\hyperref{http://cs.stanford.edu/people/danqi/papers/emnlp2014.pdf}{}{}{Chen and Manning (2014)}} The function extracting these features has been
+implemented for you in} \verb|parser_utils|. \textit{This feature vector consists of a list of tokens (e.g., the last word in the stack, first word in the buffer, dependent of the second-to-last word in the stack if there is one, etc.). They can be represented as a list of integers}
+
+\begin{align}
+	&&	[w_{1}, w_{2}, \dots, w_{m}] \nonumber
+\end{align}
+
+\noindent \textit{where $m$ is the number of features and each $0 \leq w_{i} \le \vert V \vert$ is the index of a token in the vocabulary ($\vert V \vert$ is the vocabulary size). First our network looks up an embedding for each word and concatenates them into a single input vector:}
+
+\begin{align}
+	&& \bm{x} = [\bm{L}_{w_{1}}, \bm{L}_{w_{2}}, \dots, \bm{L}_{w_{m}}] \in \mathbb{R}^{dm} \nonumber
+\end{align}
+
+\noindent \textit{where $\bm{L} \in \mathbb{R}^{\vert V \vert \times d}$ is an embedding matrix with each row $\bm{L}_{i}$ as the vector for a particular word $i$. We then compute our prediction as:}
+
+\begin{align}
+	\bm{h} &= \text{ReLU}(\bm{xW} + \bm{b}_{1}) \\
+	\hat{\bm{y}} &= \text{softmax}(\bm{hU} + \bm{b}_{2}) 
+\end{align}
+
+\noindent \textit{(recall that ReLU($z$) = max($z$, 0)). We evaluate using cross-entropy loss:}
+
+\begin{align}
+	J(\theta) &= CE(\bm{y}, \hat{\bm{y}}) = -\sum\limits_{i = 1}^{N_{c}} y_{i} log \hat{y}_{i}
+\end{align}
+
+\noindent \textit{To compute the loss for the training set, we average this $J(\theta)$ across all training examples.} 
+
+
+
+
+
+\newpage
+%----------------------
+\subproblem{e}{Xavier Initialization (4 pts)}
+\label{prob:2e}
+
+\textit{In order to avoid neurons becoming too correlated and ending up in poor local minima, it is often helpful to randomly initialize parameters. One of the most frequent initializations used is called Xavier initialization.\footnote{This is also referred to as Glorot initialization and was initially described in \hyperref{http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf}{}{}{Glorot and Bengio (2010)}.}} \\
+
+\noindent \textit{Given a matrix $\bm{A}$ of dimension $m \times n$, Xavier initialization selects values $A_{ij}$ uniformly from $[-\epsilon, \epsilon]$, where}
+
+\begin{align}
+	\epsilon &= \frac{\sqrt{6}}{\sqrt{m + n}}
+\end{align}
+
+\noindent \textit{Implement the initialization in} \verb|xavier_weight_init| \textit{in} \verb|q2_initialization.py|. \textit{You can run basic (nonexhaustive tests) by running} \verb|python q2_initialization.py|. \textit{This function will be used to initialize $\bm{W}$ and $\bm{U}$.} 
+
+
+\vskip2em
+
+
+\noindent \textbf{Answer:}\\
+
+\noindent See code: $\sim$\verb|/code/q2_initialization.py|.
+
+
+
+\vskip5em 
+
+
+%----------------------
+\subproblem{f}{Dropout Regularization (2 pts)}
+
+
 
 
 

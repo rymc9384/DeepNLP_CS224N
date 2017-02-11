@@ -9,3 +9,6 @@
 \BOOKMARK [1][-]{section.2.2}{\(b\) \040Number of Steps to Parse \(2 pts\)}{chapter.2}% 9
 \BOOKMARK [1][-]{section.2.3}{\(c\) \040Partial Parse Coding \(6 pts\)}{chapter.2}% 10
 \BOOKMARK [1][-]{section.2.4}{\(d\) \040Minibatch Parsing \(6 pts\)}{chapter.2}% 11
+\BOOKMARK [1][-]{section.2.5}{\(N/A\) \040Description \(for actual problem see Subproblem 2.6\)}{chapter.2}% 12
+\BOOKMARK [1][-]{section.2.6}{\(e\) \040Xavier Initialization \(4 pts\)}{chapter.2}% 13
+\BOOKMARK [1][-]{section.2.7}{\(f\) \040Dropout Regularization \(2 pts\)}{chapter.2}% 14
