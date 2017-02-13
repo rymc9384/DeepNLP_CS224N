@@ -70,6 +70,7 @@ class PartialParse(object):
         return self.dependencies
 
 
+
 def minibatch_parse(sentences, model, batch_size):
     """Parses a list of sentences in minibatches using a model.
 
@@ -86,6 +87,55 @@ def minibatch_parse(sentences, model, batch_size):
                       Ordering should be the same as in sentences (i.e., dependencies[i] should
                       contain the parse for sentences[i]).
     """
+
+    ### YOUR CODE HERE
+    partial_parses = []
+    
+    for i in range(len(sentences)):
+        partial_parses.append(PartialParse(sentences[i]))
+        
+    unfinished_parses = copy.copy(partial_parses)
+    dependencies = []
+    
+    for i in range(len(partial_parses)):
+        mini_batch=[]
+        mini_batch.append(unfinished_parses[i])
+        done = len(mini_batch[0].buffer) == 0 and len(mini_batch[0].stack) == 1
+                  
+        while done != True:
+            transition = model.predict(mini_batch)
+            mini_batch[0].parse_step(transition[0])
+            done = len(mini_batch[0].buffer) == 0 and len(mini_batch[0].stack) == 1
+                       
+        dependencies.append(mini_batch[0].dependencies)
+    
+    ### END YOUR CODE
+    return dependencies
+
+
+
+
+
+
+
+## Could not get it to work properly, attempt is below:
+"""
+def minibatch_parse(sentences, model, batch_size):
+    ""Parses a list of sentences in minibatches using a model.
+
+    Args:
+        sentences: A list of sentences to be parsed (each sentence is a list of words)
+        model: The model that makes parsing decisions. It is assumed to have a function
+               model.predict(partial_parses) that takes in a list of PartialParses as input and
+               returns a list of transitions predicted for each parse. That is, after calling
+                   transitions = model.predict(partial_parses)
+               transitions[i] will be the next transition to apply to partial_parses[i].
+        batch_size: The number of PartialParses to include in each minibatch
+    Returns:
+        dependencies: A list where each element is the dependencies list for a parsed sentence.
+                      Ordering should be the same as in sentences (i.e., dependencies[i] should
+                      contain the parse for sentences[i]).
+    ""
 
     ### YOUR CODE HERE
     partial_parses = []
@@ -137,11 +187,10 @@ def minibatch_parse(sentences, model, batch_size):
     
     for pp in partial_parses:
         dependencies.append(pp.dependencies)
-        
             
     ### END YOUR CODE
     return dependencies
-
+"""
 
 def test_step(name, transition, stack, buf, deps,
               ex_stack, ex_buf, ex_deps):

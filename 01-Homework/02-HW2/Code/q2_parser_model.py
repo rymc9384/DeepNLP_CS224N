@@ -3,10 +3,10 @@
 Created on Mon Feb 13 17:48:06 2017
 
 @author: rbm166
-Note: Python 3.5 (tensorflow-gpu)
+Note: Python 3.5 (tensorflow-gpu) 
 
-# Need to edit "q2_parser_transitions.py", the mini-batch processor doesn't
-# give back dependencies in the correct order. 
+# Fixed "q2_parser_transitions.py" with a "do it the stupid way first" edit.
+# Doing it properly would likely be faster, but I know that this way works.
 
 """
 
@@ -184,7 +184,7 @@ class ParserModel(Model):
         """
         ### YOUR CODE HERE
         loss = tf.nn.softmax_cross_entropy_with_logits(pred, self.labels_placeholder)
-        loss = tf.reduce_sum(loss)
+        loss = tf.reduce_mean(loss)
         ### END YOUR CODE
         return loss
 
@@ -248,7 +248,7 @@ class ParserModel(Model):
         self.build()
 
 
-def main(debug=True):
+def main(debug=False):
     print(80 * "=")
     print("INITIALIZING")
     print(80 * "=")
@@ -289,7 +289,7 @@ def main(debug=True):
                 UAS, dependencies = parser.parse(test_set)
                 print("- test UAS: {:.2f}".format(UAS * 100.0))
                 print("Writing predictions")
-                with open('q2_test.predicted.pkl', 'w') as f:
+                with open('q2_test.predicted.pkl', 'wb') as f:
                     cPickle.dump(dependencies, f, -1)
                 print("Done!")
 
