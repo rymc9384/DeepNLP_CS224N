@@ -24,6 +24,8 @@
 \newcommand{\sets}{\{A_1, A_2 \dots\} }
 \newcommand{\nsets}{\{A_1, \dots, A_n \} }
 
+\newcommand{\ts}{\textsuperscript}
+
 \titleformat{\chapter}[display]
   {\normalfont\bfseries}{}{0pt}{\LARGE}
   
@@ -348,6 +350,111 @@ implemented for you in} \verb|parser_utils|. \textit{This feature vector consist
 
 %----------------------
 \subproblem{f}{Dropout Regularization (2 pts)}
+\textit{We will regularize our network by applying Dropout.\footnote{\hyperref{http://www.cs.toronto.edu/~hinton/absps/JMLRdropout.pdf}{}{}{Srivastava et al. (2014)}} During training this randomly sets units in the hidden layer $\bm{h}$ to zero with probability $p$ and then multiplies $\bm{h}$ by a constant $\gamma$ (dropping different units each minibatch). We can write this as}
+
+\begin{align}
+	\bm{h}_{drop} &= \lambda \bm{d} \circ \bm{h}
+\end{align}
+
+\noindent \textit{where $\bm{d} \in \{0,1\}^{D_{h}}$ ($D_{h}$ is the size of $\bm{h}$) is a mask vector where each entry is 0 with probability $p$ and 1 with probability $(1 - p)$. $\gamma$ is chosen such that the value of $\bm{h}_{drop}$ in expectation equals $\bm{h}$:}
+
+\begin{align}
+	\mathbb{E_{p}}[\bm{h}_{drop}]_{i} &= \bm{h}_{i}
+\end{align}
+
+\noindent \textit{for all $0 \le i \le D_{h}$. What must $\gamma$ equal in terms of $p$? Briefly justify your answer.} 
+
+\vskip2em
+
+
+\noindent \textbf{Answer:}\\
+
+\noindent $\gamma$ must be the inverse of $p$: e.g., $\gamma = \frac{1}{p}$. We have to multiply by the reciprocal of $p$ to get back to our expectation since we are only seeing the unit $p$ times. This is best illustrated with an example. Imagine that $x = [1,1,1,1,1,1]$ and $p = 0.5$. If we randomly set half of $x$ to equal zero a bunch of times, $\bar{x}$ should equal $0.5$, and the same will be true for any individual element in $x$. This is obviously not the case as we can see that the ``true'' mean of $x = 1$. We can get back to that ``true'' value by multiplying our estimates by the inverse of $p$: $p^{-1} = \frac{1}{p} = \frac{2}{1} = 2$. 
+
+
+
+
+
+\newpage
+%----------------------
+\subproblem{g}{Adam Optimizer (4 pts)}
+\textit{We will train our model using the Adam optimizer.\footnote{\hyperref{https://arxiv.org/pdf/1412.6980.pdf}{}{}{Kingma and Ma (2015)}} Recall that standard SGD
+uses the update rule}
+
+\begin{align}
+	\bm{\theta} \leftarrow \bm{\theta} - \alpha \nabla_{\bm{\theta}} J_{minibatch}(\bm{\theta})
+\end{align}
+
+\noindent \textit{where $\bm{\theta}$ is a vector  containing all of the model parameters, J is the loss function, $\nabla_{\bm{\theta}} J_{minibatch}(\bm{\theta})$ is the the gradient of the loss function with respect to the parameters on a minibatch of data, and $\alpha$ is the learning rate. Adam uses a more sophisticated update rule with two additional steps.\footnote{The actual Adam update uses a few additional tricks that are less important, but we won’t worry about them for this problem.}} \\
+
+\begin{enumerate}
+	\item[(i)] \textit{First, Adam uses a trick called momentum by keeping track of $\bm{m}$, a rolling average of the 	gradients:}
+	\begin{align}
+		\bm{m} &\leftarrow \beta_{1}\bm{m} + (1 - \beta_{1}) \nabla_{\bm{\theta}} J_{minibatch}(\bm{\theta})\\
+		%
+		\bm{\theta} &\leftarrow \bm{\theta} - \alpha\bm{m}
+	\end{align}
+	\textit{where $\beta_{1}$ s a hyperparameter between 0 and 1 (often set to 0.9). Briefly explain (you don’t need to prove mathematically, just give an intuition) how using $\bm{m}$ stops the updates from varying as much. Why might this help with learning?}
+	%
+	%
+	\item[(ii)] \textit{Adam also uses adaptive learning rates by keeping track of $\bm{v}$, a rolling average of the magnitudes of the gradients:}
+	\begin{align}
+			\bm{m} &\leftarrow \beta_{1}\bm{m} + (1 - \beta_{1}) \nabla_{\bm{\theta}} J_{minibatch}(\bm{\theta})\\
+			%
+			\bm{v} &\leftarrow \beta_{2}\bm{v} + (1 - \beta_{2})( \nabla_{\bm{\theta}} J_{minibatch}(\bm{\theta}) \circ \nabla_{\bm{\theta}} J_{minibatch}(\bm{\theta})) \\
+			%
+			\bm{\theta} &\leftarrow \bm{\theta} - \alpha\bm{m} / \sqrt{\bm{v}}
+	\end{align}
+	\textit{where $\circ$ and $/$ denote elementwise multiplication and division (so $\bm{z} \circ \bm{z}$ is elementwise squaring) and $\beta_{2}$ is a hyperparameter between 0 and 1 (often set to 0.99). Since Adam divides the update by $\sqrt{\bm{v}}$, which of the model parameters will get larger updates? Why might this help with learning?}
+\end{enumerate}
+
+
+\vskip2em
+
+
+\noindent \textbf{Answer:}\\
+
+\noindent (i): The rolling average, $\bm{m}$, reduces variance in our updates by effectively down-weighting the impact of the current minibatch's gradient. This way, any outlier set of observations should not dramatically affect our estimates, but will still have some impact. Imagine that we have gone through 10 minibatches, all of which have told us that some parameter's weight needs to change by a fair bit for us to reach some minima (i.e., a ``steep gradient''). Then we get to the 11\ts{th} minibatch and it says we're going the wrong way with our estimates. Intuitively, it makes more sense that this is an outlier batch and that we are indeed traversing the gradient in the correct direction -- based on our previous 10 observations. The $\bm{m}$ parameter captures this intuition. \\
+
+\noindent (ii): Since Adam divides $\bm{m}$ by $\sqrt{\bm{v}}$, the parameters with the steepest gradients and the smallest variances will have the largest updates. This makes sense because we \textit{know} that we need to update those values. If the variance of the gradients is large, we aren't sure where we need to go, so we don't want to move too far -- for fear of going the wrong way. 
+
+
+
+
+
+\newpage
+%----------------------
+\subproblem{h}{Neural Dependency Parser (20 pts)}
+\textit{In} \verb|q2_parser_model.py| \textit{implement the neural network classifier governing the dependency parser by filling in the appropriate sections. We will train and evaluate our model on the Penn Treebank (annotated with Universal Dependencies). Run} \verb|python q2_parser_model.py| \textit{to train your model and compute predictions on the test data (make sure to turn off debug settings when doing final evaluation).} \\
+
+\noindent\textbf{\textit{Hints:}}
+\begin{itemize}
+	\item \textit{When debugging, pass the keyword argument} \verb|debug=True| \textit{to the} \verb|main| \textit{method (it is set to} \verb|True| \textit{by default). This will cause the code to run over a small subset of the data, so training the model won't take as long.}
+	%
+	\item \textit{This code should run within 1 hour on a CPU.}
+	%
+	\item \textit{When running with} \verb|debug=False|, \textit{you should be able to get a loss smaller than 0.07 on the train set (by the end of the last epoch) and an Unlabeled Attachment Score larger than 88 on the dev set (with the best-performing model out of all the epochs). For comparison, the model in the original neural dependency parsing paper gets 92.5. If you want, you can tweak the hyperparameters for your model (hidden layer size, hyperparameters for Adam, number of epochs, etc.) to improve the performance (but you are not required to do so).}
+\end{itemize}
+
+\noindent \textbf{\textit{Deliverables:}}
+
+\begin{itemize}
+	\item \textit{Working implementation of the neural dependency parser in} \verb|q2_parser_model.py|. \textit{(We’ll look at, and possibly run this code for grading).}
+	%
+	\item \textit{Report the best UAS your model achieves on the dev set and the UAS it achieves on the test set.}
+	%
+	\item \textit{List of predicted labels for the test set in the file} \verb|q2_test.predicted|.
+\end{itemize}
+
+\noindent (i) \textit{\textbf{Bonus} (1 point): Add an extension to your model (e.g., l2 regularization, an additional hidden layer) and report the change in UAS on the dev set. Briefly explain what your extension is and why it helps (or hurts!) the model. Some extensions may require tweaking the hyperparameters in} \verb|Config| \textit{to make them effective.}
+
+
+\vskip2em
+
+\noindent \textbf{Answer:} \\
+
+\noindent See code: $\sim$\verb|/code/q2_parser_model.py|.
+
 
 
 

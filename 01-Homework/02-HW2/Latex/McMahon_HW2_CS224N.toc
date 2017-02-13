@@ -13,3 +13,5 @@
 \contentsline {section}{\numberline {2.5}(N/A)~ Description (for actual problem see Subproblem~\ref {prob:2e})}{7}{section.2.5}
 \contentsline {section}{\numberline {2.6}(e)~ Xavier Initialization (4 pts)}{8}{section.2.6}
 \contentsline {section}{\numberline {2.7}(f)~ Dropout Regularization (2 pts)}{8}{section.2.7}
+\contentsline {section}{\numberline {2.8}(g)~ Adam Optimizer (4 pts)}{9}{section.2.8}
+\contentsline {section}{\numberline {2.9}(h)~ Neural Dependency Parser (20 pts)}{10}{section.2.9}
