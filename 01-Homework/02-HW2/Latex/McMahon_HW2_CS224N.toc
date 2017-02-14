@@ -15,3 +15,4 @@
 \contentsline {section}{\numberline {2.7}(f)~ Dropout Regularization (2 pts)}{8}{section.2.7}
 \contentsline {section}{\numberline {2.8}(g)~ Adam Optimizer (4 pts)}{9}{section.2.8}
 \contentsline {section}{\numberline {2.9}(h)~ Neural Dependency Parser (20 pts)}{10}{section.2.9}
+\contentsline {chapter}{\numberline {3}Problem 3: Recurrent Neural Networks: Language Modeling (25 pts)}{11}{chapter.3}

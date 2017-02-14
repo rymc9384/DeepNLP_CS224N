@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Feb 8 16:42:35 2017
-Last Edited on Sat Feb 11 15:15:00 2017
+Last Edited on Sat Feb 14 10:25:00 2017
 
 @author: rbm166
 
@@ -88,7 +88,8 @@ def minibatch_parse(sentences, model, batch_size):
                       contain the parse for sentences[i]).
     """
 
-    ### YOUR CODE HERE
+    ### YOUR CODE HERE: 
+    #   Note, this is not a proper implementation, but does work.
     partial_parses = []
     
     for i in range(len(sentences)):
@@ -113,84 +114,6 @@ def minibatch_parse(sentences, model, batch_size):
     return dependencies
 
 
-
-
-
-
-
-## Could not get it to work properly, attempt is below:
-"""
-def minibatch_parse(sentences, model, batch_size):
-    ""Parses a list of sentences in minibatches using a model.
-
-    Args:
-        sentences: A list of sentences to be parsed (each sentence is a list of words)
-        model: The model that makes parsing decisions. It is assumed to have a function
-               model.predict(partial_parses) that takes in a list of PartialParses as input and
-               returns a list of transitions predicted for each parse. That is, after calling
-                   transitions = model.predict(partial_parses)
-               transitions[i] will be the next transition to apply to partial_parses[i].
-        batch_size: The number of PartialParses to include in each minibatch
-    Returns:
-        dependencies: A list where each element is the dependencies list for a parsed sentence.
-                      Ordering should be the same as in sentences (i.e., dependencies[i] should
-                      contain the parse for sentences[i]).
-    ""
-
-    ### YOUR CODE HERE
-    partial_parses = []
-    
-    for i in range(len(sentences)):
-        partial_parses.append(PartialParse(sentences[i]))
-        
-    unfinished_parses = copy.copy(partial_parses)
-    dependencies = []
-    
-    lb = 0 # index the lower bound of batches to take
-    ub = batch_size
-    
-    while len(unfinished_parses) > 0:
-        # In case our batch extends past end of the list:    
-        if ub > len(unfinished_parses):
-            indexes = list(range(lb,len(unfinished_parses)))
-            reset = True
-        else:
-            indexes = list(range(lb,ub))
-            reset = (ub == len(unfinished_parses))
-        
-        # Make mini batch:
-        mini_batch = []
-        done = []   # is the parse done?
-        
-        for i in indexes:
-            mini_batch.append(unfinished_parses[i])
-         
-        transitions = model.predict(mini_batch)
-        
-        for i in range(len(transitions)):
-            mini_batch[i].parse_step(transitions[i])
-            done.append(len(unfinished_parses[i].buffer) == 0 \
-                         and len(unfinished_parses[i].stack) == 1)
-               
-        for i in range(len(done)):
-            if done[i] == True:
-                unfinished_parses.pop(i)
-        
-        if reset == True:
-            lb = 0
-            ub = lb + batch_size
-        else:
-            lb = ub 
-            ub += 2
-            
-    # END WHILE //
-    
-    for pp in partial_parses:
-        dependencies.append(pp.dependencies)
-            
-    ### END YOUR CODE
-    return dependencies
-"""
 
 def test_step(name, transition, stack, buf, deps,
               ex_stack, ex_buf, ex_deps):

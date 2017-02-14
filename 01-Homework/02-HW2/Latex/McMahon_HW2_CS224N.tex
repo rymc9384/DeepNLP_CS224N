@@ -453,9 +453,68 @@ uses the update rule}
 
 \noindent \textbf{Answer:} \\
 
-\noindent See code: $\sim$\verb|/code/q2_parser_model.py|.
+\noindent See code: $\sim$\verb|/code/q2_parser_model.py|. \\
+
+\noindent The best UAS I achieved on the development data set was 88.67\%. This translated to an unlabeled attachment score of 89.07\% on the test set. 
 
 
+
+
+\newpage
+
+%-------------------------------------
+\problem{3: Recurrent Neural Networks: Language Modeling  (25 pts)}
+%-------------------------------------
+\textit{In this section, you’ll compute the gradients of a recurrent neural network (RNN) for language modeling.} \\
+
+\noindent \textit{Language modeling is a central task in NLP, and language models can be found at the heart of speech recognition, machine translation, and many other systems. Given a sequence of words (represented as one-hot row vectors) $\bm{x}^{(1)}, \bm{x}^{(2)}, \dots, \bm{x}^{(t)}$, a language model predicts the next word $\bm{x}^{(t+1)}$ by modeling:}
+
+\begin{align}
+	P(\bm{x}^{(t+1)} &= \bm{v}_{j} \vert \bm{x}^{(t)}, \dots, \bm{x}^{(1)})
+\end{align} 
+
+\noindent \textit{where $\bm{v}_{j}$ is a word in the vocabulary.} \\
+
+\noindent \textit{Your job is to compute the gradients of a recurrent neural network language model, which uses feedback information in the hidden layer to model the ``history'' $\bm{x}^{(t)}, \bm{x}^{(t-1)}, \dots, \bm{x}^{(1)}$. Formally, the model is, for $t = 1, \dots, n-1$:}%
+\footnote{Model adapted from \hyperref{http://www.fit.vutbr.cz/research/groups/speech/publi/2010/mikolov_interspeech2010_IS100722.pdf}{}{}{Mikolov et al. (2010).}} %
+%
+\begin{align}
+	\bm{e}^{(t)} &= \bm{x}^{(t)}\bm{L} \\
+	%
+	\bm{h}^{(t)} &= \text{sigmoid} \left( \bm{h}^{(t-1)}\bm{H} + \bm{e}^{(t)}\bm{I} + \bm{b}_{1} \right)\\
+	%
+	\hat{\bm{y}}^{(t)} &= \text{softmax}  \left( \bm{h}^{(t)}\bm{U} + \bm{b}_{2} \right) \\
+	%
+	\bar{P}\left( \bm{x}^{(t+1)} = \bm{v}_{j} \vert \bm{x}^{(t)}, \dots, \bm{x}^{(1)} \right) &= \hat{\bm{y}}_{j}^{(t)}
+\end{align}
+%
+\noindent \textit{where $\bm{h}^{(0)} = \bm{h}_{0} \in \mathbb{R}^{D_{k}}$ is some initialization vector for the hidden layer and $\bm{x}^{(t)}\bm{L}$ is the product of $\bm{L}$ with the one-hot row vector $\bm{x}^{(t)}$ representing the current word. The parameters are: }
+%
+\begin{align}
+	&\bm{L} \in \mathbb{R}^{\vert V \vert \times d} 
+	%
+	&\bm{H} \in \mathbb{R}^{D_{h} \times D_{h}} \\ 
+	%
+	%
+	&\bm{I} \in \mathbb{R}^{d \times D_{h}} 
+	%
+	&\bm{b}_{1} \in \mathbb{R}^{D_{h}} \\ 
+	%
+	%
+	& \bm{U} \in \mathbb{R}^{D_{h} \times \vert V \vert} 
+	%	
+	& \bm{b}_{2} \in \mathbb{R}^{\vert V \vert} 
+\end{align}
+%
+\noindent \textit{where $\bm{L}$ is the embedding matrix, $\bm{I}$ is the input word representation matrix, $\bm{H}$ is the hidden transformation matrix, and $\bm{U}$ is the output word representation matrix. $\bm{b}_{1}$ and $\bm{b}_{2}$ are biases. $d$ is the embedding dimension, $\vert V \vert$ is the vocabulary size, and $D_{h}$ is the hidden layer dimension.} \\
+
+\noindent \textit{The output vector $\hat{\bm{y}}^{(t)} \in \mathbb{R}^{\vert V \vert}$ is a probability distribution over the vocabulary. The model is trained by minimizing the (un-regularized) cross entropy loss:}
+%
+\begin{align}
+	J^{(t)}(\theta) = CE(\bm{y}^{(t)} , \hat{\bm{y}}^{(t)}) &= - \sum_{j=1}^{\vert V \vert} y_{j}^{(t)} log \hat{y}_{j}^{(t)}
+\end{align}
+% 
+\noindent \textit{where $\bm{y}^{(t)}$ is the one-hot vector corresponding to the target word (which here is equal to $\bm{x}^{(t+1)}$). We average the cross-entropy loss across all examples (i.e., words) in a sequence to get the loss for a single sequence.}
 
 
 
