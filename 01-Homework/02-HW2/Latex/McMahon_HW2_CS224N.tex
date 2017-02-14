@@ -511,12 +511,119 @@ uses the update rule}
 \noindent \textit{The output vector $\hat{\bm{y}}^{(t)} \in \mathbb{R}^{\vert V \vert}$ is a probability distribution over the vocabulary. The model is trained by minimizing the (un-regularized) cross entropy loss:}
 %
 \begin{align}
-	J^{(t)}(\theta) = CE(\bm{y}^{(t)} , \hat{\bm{y}}^{(t)}) &= - \sum_{j=1}^{\vert V \vert} y_{j}^{(t)} log \hat{y}_{j}^{(t)}
+	J^{(t)}(\theta) = CE(\bm{y}^{(t)} , \hat{\bm{y}}^{(t)}) &= - \sum_{j=1}^{\vert V \vert} y_{j}^{(t)} log(\hat{y}_{j}^{(t)})
 \end{align}
 % 
 \noindent \textit{where $\bm{y}^{(t)}$ is the one-hot vector corresponding to the target word (which here is equal to $\bm{x}^{(t+1)}$). We average the cross-entropy loss across all examples (i.e., words) in a sequence to get the loss for a single sequence.}
 
 
 
+\newpage
+%----------------------
+\subproblem{a}{Perplexity and Cross-Entropy Loss (5 pts)}
+\textit{Conventionally, when reporting performance of a language model, we evaluate on perplexity, which is defined as:}
+%
+\begin{align}
+\label{eq:perplexity}
+	PP^{(t)} \left( \bm{y}^{(t)}, \hat{\bm{y}}^{(t)} \right) &= \frac{ 1 }{ \bar{P} \left( \bm{x}_{pred}^{(t+1)} = \bm{x}^{(t+1)} \vert \bm{x}^{(t)}, \dots, \bm{x }^{(1)} \right)} = \frac{ 1 }{ \sum_{j=1}^{\vert V \vert} y_{j}^{(t)} \cdot \hat{y}_{j}^{(t)} }
+\end{align}
+% 
+\noindent \textit{i.e. the inverse probability of the correct word, according to the model distribution $\bar{P}$. Show how you can derive perplexity from the cross-entropy loss (Hint: remember that $\bm{y}^{(t)}$ is one-hot!), and thus argue that minimizing the (arithmetic) mean cross-entropy loss will also minimize the (geometric) mean perplexity across the training set. \textbf{This should be a very short problem - not too perplexing!}} \\
+
+\noindent \textit{For a vocabulary of $\vert V \vert$ words, what would you expect perplexity to be if your model predictions were completely random (chosen uniformly from the vocabulary)? Compute the corresponding cross-entropy loss for $\vert V \vert$ = 10000.}
+
+\vskip2em
+
+
+\noindent \textbf{Answer:} \\
+
+\noindent (i) Perplexity can alternatively be defined as $PP(\bm{y}, \hat{\bm{y}}) = 2^{J^{(t)}(\theta)}$. We can work back to this definition from the original perplexity formula, in Equation~\ref{eq:perplexity}, above. I drop the superscript $(t)$ for simplicity:
+%
+\begin{align}
+	PP(\bm{y}, \hat{\bm{y}}) %
+	&= \frac{ 1 }{ \sum_{j=1}^{\vert V \vert} y_{j} \cdot \hat{y}_{j}} \nonumber
+\end{align}
+%
+\noindent And because we are operating on a one-hot vector, we can move between summations and products:
+%
+\begin{align}
+	\hspace*{1in}&= \frac{ 1 }{ \prod_{j=1}^{\vert V \vert} \hat{y}_{j}^{\hspace*{0.1cm} y_{j}} } \nonumber \\
+	%
+	%
+	\hspace*{1in}&= \frac{ 1 }{ \prod_{j=1}^{\vert V \vert} 2^{log(\hat{y}_{j}^{\hspace*{0.1cm} y_{j}} )}} \nonumber \\
+	%
+	%
+	\hspace*{1in}&= \frac{ 1 }{ \prod_{j=1}^{\vert V \vert} 2^{y_{j} \times log(\hat{y}_{j})} } \nonumber \\
+	%
+	%
+	\hspace*{1in}&= 2^{-\sum_{j=1}^{\vert V \vert} y_{j} - \hat{y}_{j} } \nonumber
+\end{align}
+%
+\noindent The reason that minimizing the arithmetic mean cross-entropy loss also minimizes the geometric mean perplexity is that the perplexity can be defined as a monotonic transformation the cross-entropy. In other words, $J^{(t)}(\theta)$, and by definition $2^{J^{(t)}(\theta)}$, only decreases as $\hat{y}_{target}^{(t)}$ increases. Thus, minimizing one will also minimize the other. This equivalence is shown below (for $N$ examples):
+%
+\begin{align}
+	2^{\frac{1}{N} \sum_{t=1}^{n-1} J^{(t)}(\theta)} %
+	&= \left( \prod_{t=1}^{n-1} PP(\bm{y}^{(t)}, \hat{\bm{y}}^{(t)} \right)^{\frac{1}{N}} \nonumber
+\end{align}
+%
+% %
+%
+\newpage 
+\noindent(ii) Assuming $|V|$ = 10,000, with predictions drawn randomly from a uniform distribution prediction:
+%
+\begin{align}
+	E(\hat{y}_{j}^{(t)}) &= \frac{1}{|V|} = \frac{1}{10,000} \hspace*{0.2cm}, \hspace*{0.2cm} \forall j \in |V| \nonumber \\
+	%
+	CE(\bm{y}^{(t)} , \hat{\bm{y}}^{(t)}) %
+	&= - \sum_{j=1}^{|V|} y_{j}^{(t)} log(\hat{y}_{j}^{(t)}) \nonumber \\
+	%
+	&= - log(E(\hat{y}_{target}^{(t)})) = - log(\frac{1}{10,000}) \nonumber \\
+	%
+	&\approx 9.213 \nonumber 
+\end{align}
+
+
+
+
+\vskip5em
+
+
+%----------------------
+\subproblem{b}{Gradients $w.r.t.$ the Loss (8 pts)}
+\textit{Compute the gradients of the loss $J$ with respect to the following model parameters at a single point in time $t$ (to save a bit of time, you don’t have to compute the gradients with the respect to $\bm{U}$ and $\bm{b}_{1}$):}
+%
+\begin{align}
+	\hspace*{1cm}
+	%
+	\frac{ \partial J^{(t)} }{ \partial \bm{b}_{2} }
+	%
+	\hspace*{1cm} 
+	% 
+	\frac{ \partial J^{(t)} }{ \partial \bm{L}_{x^{(t)}} } 
+	%
+	\hspace*{1cm} 
+	% 
+	\frac{ \partial J^{(t)} }{ \partial \bm{I} } \bigg\rvert_{(t)} 
+	%
+	\hspace*{1cm}
+	%
+	\frac{ \partial J^{(t)} }{ \partial \bm{H} } \bigg\rvert_{(t)} 
+\end{align}
+%
+\noindent \textit{where $\bm{L}_{x^{(t)}}$ is the row of $\bm{L}$ corresponding to the current word $\bm{x}^{(t)}$, and $\bigg\rvert_{(t)}$ denotes the gradient for the appearance of that parameter at time $t$ (equivalently, $\bm{h}^{(t-1)}$ is taken to be fixed, and you need not backpropagate to earlier timesteps just yet -- you'll do that in part (c)).} \\
+%
+\noindent \textit{Additionally, compute the derivative with respect to the previous hidden layer value:}
+%
+\begin{align}
+	\frac{\partial J^{(t)}}{\partial \bm{h}^{(t-1)}}
+\end{align}
+%
+
+\vskip2em
+
+
+\noindent \textbf{Answer:} \\
+%
+\noindent 
 
 \end{document}

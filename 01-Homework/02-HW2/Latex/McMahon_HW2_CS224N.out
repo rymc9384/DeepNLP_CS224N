@@ -15,3 +15,5 @@
 \BOOKMARK [1][-]{section.2.8}{\(g\) \040Adam Optimizer \(4 pts\)}{chapter.2}% 15
 \BOOKMARK [1][-]{section.2.9}{\(h\) \040Neural Dependency Parser \(20 pts\)}{chapter.2}% 16
 \BOOKMARK [0][-]{chapter.3}{Problem 3: Recurrent Neural Networks: Language Modeling \(25 pts\)}{}% 17
+\BOOKMARK [1][-]{section.3.1}{\(a\) \040Perplexity and Cross-Entropy Loss \(5 pts\)}{chapter.3}% 18
+\BOOKMARK [1][-]{section.3.2}{\(b\) \040Gradients w.r.t. the Loss \(8 pts\)}{chapter.3}% 19
