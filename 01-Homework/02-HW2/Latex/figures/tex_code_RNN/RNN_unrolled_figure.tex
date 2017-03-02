@@ -1,0 +1,55 @@
+\documentclass{article}
+
+\usepackage{tikz}
+\usepackage{bm}
+\usetikzlibrary{calc}
+
+\begin{document}
+
+\def\layersep{-2.5cm}
+
+\tikzset{neuron/.style={circle,thick,fill=black!25,minimum size=35pt,inner sep=0pt},
+    yhat neuron/.style={neuron,fill=white,draw},
+    h neuron/.style={neuron,fill=white,draw},
+    x neuron/.style={neuron,fill=white,draw},
+    hoz/.style={rotate=-90}}   %<--- for labels
+
+\begin{tikzpicture}[-,draw=black, node distance=\layersep,transform shape,rotate=90]  %<-- rotate the NN
+
+% Draw the "hat(y_t)" layer nodes
+\foreach \name / \y in {3/-2,6/-1,9/}
+\node[yhat neuron, hoz] (YHAT-\name) at (0,-\name) {\color{red}$\hat{y}^{(t\y)}$};
+
+%\node[hoz] (N-4) at (0,-4) {$\dots$};
+
+
+% Draw the "h" layer nodes
+\foreach \name / \y in {0/-3,3/-2,6/-1,9/, 12/+1}
+\path[yshift=0cm] node [h neuron, hoz] (H-\name) at (\layersep,-\name cm) {\color{red}$h^{(t\y)}$};
+
+
+% Draw the input layer nodes:
+\foreach \name / \y in {3/-2,6/-1,9/}
+\path[yshift=0cm] node [x neuron, hoz] (X-\name) at (\layersep*2,-\name) {\color{red}$\bm{x}^{(t\y)}$};
+
+
+% Connect middle nodes in the "h" layer vertically with yhats.
+    \foreach \source in {3,6,9}
+    		\path (H-\source.north) edge[->,line width=1] (YHAT-\source.south);
+            
+    
+% Connect middle nodes to each other.
+    \path (H-0.east) edge[->,line width=1] (H-3.west);
+    \path (H-3.east) edge[->,line width=1] (H-6.west);
+    \path (H-6.east) edge[->,line width=1] (H-9.west);
+    \path (H-9.east) edge[->,line width=1] (H-12.west);
+
+
+% Connect input nodes vertically with the "h" layer.
+    \foreach \source in {3,6,9}
+    		\path (X-\source.north) edge[->,line width=1] (H-\source.south);
+     
+               
+
+\end{tikzpicture}
+\end{document}

@@ -17,3 +17,4 @@
 \BOOKMARK [0][-]{chapter.3}{Problem 3: Recurrent Neural Networks: Language Modeling \(25 pts\)}{}% 17
 \BOOKMARK [1][-]{section.3.1}{\(a\) \040Perplexity and Cross-Entropy Loss \(5 pts\)}{chapter.3}% 18
 \BOOKMARK [1][-]{section.3.2}{\(b\) \040Gradients w.r.t. the Loss \(8 pts\)}{chapter.3}% 19
+\BOOKMARK [1][-]{section.3.3}{\(c\) \040BPTT \(8 pts\)}{chapter.3}% 20
