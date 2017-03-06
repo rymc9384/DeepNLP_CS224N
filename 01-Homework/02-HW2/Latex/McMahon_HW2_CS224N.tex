@@ -681,7 +681,6 @@ First, the gradient with respect to $\bm{b}_{2}$:
 									   &=  (\bm{e}^{(t)})^{T} \bm{\delta}_{1}^{(t)} \textit{, note at $\ddagger$} \nonumber
 \end{align}
 %
-$\ddagger:$ Originally had this as $\left( (\bm{\delta}_{1}^{(t)})^{T} \bm{e}^{(t)} \right)^{T}$, but unnecessarily transposes two elements. Solution shown above is much cleaner. 
 
 \hskip1em
 
@@ -707,13 +706,15 @@ $\ddagger:$ Originally had this as $\left( (\bm{\delta}_{1}^{(t)})^{T} \bm{e}^{(
 											   &=  \bm{\delta}_{1}^{(t)} \bm{H}^{T} \nonumber
 \end{align}
 
+\vskip2em
 
+\noindent $\ddagger:$ Originally had this as $\left( (\bm{\delta}_{1}^{(t)})^{T} \bm{e}^{(t)} \right)^{T}$, but unnecessarily transposes two elements. Solution shown above is much cleaner. 
 
 
 
 \newpage
 %----------------------
-\subproblem{c}{BPTT (8 pts)}
+\subproblem{c}{Backpropagation Through Time (BPTT) (8 pts)}
 \textit{Draw the “unrolled” network for 3 timesteps, and compute the backpropagation-through-time gradients:}
 %
 \begin{align}
@@ -750,21 +751,82 @@ $\ddagger:$ Originally had this as $\left( (\bm{\delta}_{1}^{(t)})^{T} \bm{e}^{(
 	\includegraphics[scale=0.75]{01-unrolled_rnn}
 \end{figure}
 
+\newpage 
+
+\noindent \textbf{Answer (continued):} \\
+
+\noindent Now for the gradient calculations, let $\sigma'(\bm{f}_{1}^{(t-1)}) = \frac{\partial \bm{h}^{(t-1)}}{\partial \bm{f}_{1}^{(t-1)}} = diag\left(\bm{h}^{(t-1)} \circ (1 - \bm{h}^{(t-1)}) \right)$.%
+%
+\footnote{This definition was also with some assistance from the solution set. Once this is set the derivations follow naturally from the previous solutions.} %
+%
+\newline 
+First, $\frac{\partial J ^{(t)}}{\partial \bm{L}_{x^{(t-1)}}}$:
+%
+\begin{align}
+	\frac{\partial J ^{(t)}}{\partial \bm{L}_{x^{(t-1)}}} &= %
+		\frac{\partial J ^{(t)}}{\partial \bm{h}^{(t-1)}} %
+		\frac{\partial \bm{h}^{(t-1)}}{\partial \bm{f}_{1}^{(t-1)}} %
+		\frac{\partial \bm{f}_{1}^{(t-1)}}{\partial \bm{L}_{x^{(t-1)}}} \nonumber \\
+	%
+		&= \bm{\delta}^{(t-1)} \sigma'(\bm{f}_{1}^{(t-1)}) \bm{I}^{T} \nonumber 
+\end{align}
+%
+\hskip1em
+
+\noindent Now with respect to $\bm{I}$ at the previous time point:
+%
+\begin{align}
+	\frac{\partial J ^{(t)}}{\partial \bm{I}} &= %
+		\frac{\partial J ^{(t)}}{\partial \bm{h}^{(t-1)}} %
+		\frac{\partial \bm{h}^{(t-1)}}{\partial \bm{f}_{1}^{(t-1)}} %
+		\frac{\partial \bm{f}_{1}^{(t-1)}}{\partial \bm{I}} \nonumber \\
+	%		
+		&=  (\bm{e}^{(t-1)})^{T} \bm{\delta}_{1}^{(t-1)} \sigma'(\bm{f}_{1}^{(t-1)}) \nonumber
+\end{align}
+% 
+\hskip1em
+
+\noindent And finally, with respect to $\bm{H}$ at the previous time point:
+%
+\begin{align}
+	\frac{\partial J ^{(t)}}{\partial \bm{H}} &= %
+		\frac{\partial J ^{(t)}}{\partial \bm{h}^{(t-1)}} %
+		\frac{\partial \bm{h}^{(t-1)}}{\partial \bm{f}_{1}^{(t-1)}} %
+		\frac{\partial \bm{f}_{1}^{(t-1)}}{\partial \bm{H}} \nonumber \\
+	%
+		&= (\bm{h}^{(t-2)})^{T} \bm{\delta}^{(t-1)} \sigma'(\bm{f}_{1}^{(t-1)}) \nonumber
+\end{align}
+
 \vskip2em
 
-\noindent Now for the gradient calculations, let $\sigma'(\bm{f}_{1}^{(t-1)}) = \frac{\partial \bm{h}^{(t-1)}}{\partial \bm{f}_{1}^{(t-1)}} = diag\left(\bm{h}^{(t-1)} \circ (1 - \bm{h}^{(t-1)}) \right)$
+%\newpage
+%----------------------
+\subproblem{d}{Computational Complexity (4 pts)}
+\textit{Given $\bm{h}^{(t-1)}$, how many operations are required to perform one step of forward propagation to compute $J^{(t)}(\theta)$? How about backpropagation for a single step in time? For $\tau$ steps in time? Express your answer in big-O notation in terms of the dimensions $d$, $D_{h}$, and $|V|$. What is the slow step?}
+%
 
 
+\vskip2em
 
+\noindent \textbf{Answer:} \\
 
+\noindent For forward propagation, there are 3 transformations that will impact run time and we can express the complexity as a function of the dimensions of those transformations. These are: 1) the input word representation matrix ($\bm{I}$); 2) the hidden transformation matrix ($\bm{H}$); and 3) the output word representation matrix ($\bm{U}$). In big-O notation:
+%
+\begin{align}
+	\text{Forward-prop} &= O\left( (d \times D_{h}) + D_{h}^{2} + (D_{h} \times |V|) \right) \nonumber
+\end{align}
+%
+\vskip1em
 
+\noindent And for backward propagation, it's largely the same thing; however, we need to take the number of time steps, $\tau$, that we're propagating errors to:
+%
+\begin{align}
+	\text{Backward-prop} &= O\left( (d \times D_{h}) + D_{h}^{2} + \tau (D_{h} \times |V|) \right) \nonumber
+\end{align}
+%
+\vskip1em
 
-
-
-
-
-
-
+\noindent Finally, the slow part is the last step when we are taking the softmax of the output word matrix. This is slow because we need to construct a proper probability distribution over the whole of $|V|$, which can be extremely large: i.e., the $O(D_{h} \times |V|)$ piece from $\bm{U}$.
 
 
 \end{document}
