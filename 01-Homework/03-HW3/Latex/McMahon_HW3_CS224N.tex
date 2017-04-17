@@ -49,7 +49,123 @@
 %-------------------------------------
 \problem{1: A Window Into NER (30 pts)}
 %-------------------------------------
-\textit{}
+%
+See ``$\sim$/03-HW3/assignment3.pdf'' for the full introduction to the question. \\
+%
+
+\noindent \textit{... With these, each input and output is of a uniform length ($w$ and 1 respectively) and we can use a simple feedforward neural net to predict $\bm{y}^{(t)}$ from $\bm{\tilde{x}}^{(t)}$ :
+As a simple but effective model to predict labels from each window, we will use a single hidden layer with a ReLU activation, combined with a softmax output layer and the cross-entropy loss:}
+
+
+\begin{align}
+	%
+	\bm{e}^{(t)} &= [ \bm{x}^{(t-w)}L, \dots, \bm{x}^{(t)}L, \dots, \bm{x}^{(t+w)}L ] \nonumber \\
+	%
+	\bm{h}^{(t)} &= \text{ReLU}(\bm{e}^{(t)}W + \bm{b}_{1}) \nonumber \\
+	%
+	\hat{\bm{y}}^{(t)} &= \text{softmax}(\bm{h}^{(t)}U + \bm{b}_{2}) \nonumber \\
+	%
+	J &= \text{CE}(\bm{y}^{(t)}, \hat{\bm{y}}^{(t)}) \nonumber \\
+	%
+	\text{CE}(\bm{y}^{(t)}, \hat{\bm{y}}^{(t)}) &= -\sum_{i} y_{i}^{(t)} \log(\hat{y}_{i}^{(t)})\text{ , } \nonumber
+\end{align}
+
+\noindent \textit{where $L \in \mathbb{R}^{V \times D}$ are word embeddings, $\bm{h}^{(t)}$ is dimension $H$ and $\hat{\bm{y}}^{(t)}$ is of dimension $C$, where $V$ is the size of the vocabulary, $D$ is the size of the word embedding, $H$ is the size of the hidden layer and $C$ is the number of classes being predicted (here 5).}
+
+
+\vskip2em
+
+%----------------------
+\subproblem{a}{Conceptual (5 pts)}
+
+
+%-------
+\subsubproblem{i}{(2 pts)}
+
+\textit{Provide 2 examples of sentences containing a named entity with an ambiguous type
+(e.g. the entity could either be a person or an organization, or it could either be an organization
+or not an entity).} \\
+
+\noindent \textbf{Answer:}
+
+\begin{enumerate}
+	\item What have you heard about Louis Vuitton? 
+	\item We had dinner at that new restaurant, Frank's, last night.
+\end{enumerate}
+
+\vskip2em
+
+
+%-------
+\subsubproblem{ii}{(1 pt)}
+
+\textit{Why might it be important to use features apart from the word itself to predict named entity labels?} \\
+
+\noindent \textbf{Answer:}
+
+\noindent The word feature matrix is an extremely sparse representation format, wherein it is going to be difficult to recognize entities that don't appear very often. 
+
+
+\vskip2em
+
+
+%-------
+\subsubproblem{iii}{(2 pts)}
+
+\textit{Describe at least two features (apart from the word) that would help in predicting whether a word is part of a named entity or not.} \\
+
+\noindent \textbf{Answer:}
+
+\noindent The most obvious additional predictor would be capitalization. Another would be part-of-speech tags (e.g., if the previous word, $w^{(t-1)}$, is a determiner, the current word is more likely to be an entity). 
+
+
+\vskip5em
+
+
+
+%----------------------
+\subproblem{b}{Network Components (5 pts)}
+
+
+%-------
+\subsubproblem{i}{(2 pts)}
+
+\textit{What are the dimensions of $\bm{e}^{(t)}$, $W$ and $U$ if we use a window of size $w$?} \\
+
+\noindent \textbf{Answer:}
+
+\begin{enumerate}
+	\item $\bm{e}^{(t)}$ is going to be a row vector of length $(2w + 1) \times D$
+	\item $W$ is going to be a matrix of dimensionality $|\bm{e}^{(t)}| \times H$
+	\item $U$ is going to be a matrix of dimensionality $H \times C$
+\end{enumerate}
+
+
+
+%-------
+\subsubproblem{ii}{(3 pts)}
+
+\textit{What is the computational complexity of predicting labels for a sentence of length $T$?} \\
+
+\noindent \textbf{Answer:}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \end{document}
