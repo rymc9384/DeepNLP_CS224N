@@ -102,7 +102,7 @@ class ModelHelper(object):
         if not os.path.exists(path):
             os.makedirs(path)
         # Save the tok2id map.
-        with open(os.path.join(path, "features.pkl"), "w") as f:
+        with open(os.path.join(path, "features.pkl"), "wb") as f:
             pickle.dump([self.tok2id, self.max_length], f)
 
     @classmethod
