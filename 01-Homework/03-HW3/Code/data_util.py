@@ -110,7 +110,7 @@ class ModelHelper(object):
         # Make sure the directory exists.
         assert os.path.exists(path) and os.path.exists(os.path.join(path, "features.pkl"))
         # Save the tok2id map.
-        with open(os.path.join(path, "features.pkl")) as f:
+        with open(os.path.join(path, "features.pkl"), "rb") as f:
             tok2id, max_length = pickle.load(f)
         return cls(tok2id, max_length)
 
