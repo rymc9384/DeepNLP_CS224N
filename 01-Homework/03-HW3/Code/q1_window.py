@@ -35,7 +35,7 @@ class Config:
     TODO: Fill in what n_window_features should be, using n_word_features and window_size.
     """
     n_word_features = 2 # Number of features for every word in the input.
-    window_size = 1 # The size of the window to use.
+    window_size = 2 # The size of the window to use.
     ### YOUR CODE HERE
     n_window_features = (2*window_size + 1)*n_word_features # The total number of features used for each window.
     ### END YOUR CODE
@@ -44,7 +44,7 @@ class Config:
     embed_size = 50
     hidden_size = 200
     batch_size = 2048
-    n_epochs = 10
+    n_epochs = 15
     lr = 0.001
 
     def __init__(self, output_path=None):
