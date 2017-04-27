@@ -140,7 +140,7 @@ or not an entity).} \\
 	\item $U$ is going to be a matrix of dimensionality $H \times C$
 \end{enumerate}
 
-
+\vskip2em
 
 %-------
 \subsubproblem{ii}{(3 pts)}
@@ -149,20 +149,230 @@ or not an entity).} \\
 
 \noindent \textbf{Answer:}
 
+\noindent Since we know the dimensionality of the network's elements (see above), and we know that complexity scales linearly with the operations on those elements, we can generalize from the dimensionality to complexity. Then, for a sentence of length $T$, the complexity of this model is $O\left( (|\bm{e}^{(t)}| \times H \times T) + (H \times C) \right)$, where $|\bm{e}^{(t)}| = (2w + 1) \times D$.
+
+
+\vskip5em
+
+
+
+%----------------------
+\subproblem{c}{Implementing a Window Based Model (15 pts)}
+
+\textit{Implement a window-based classifier model in} \verb|q1_window.py| \textit{using this approach. To do so, you will have to:} \\
+
+
+%-------
+\subsubproblem{i}{(5 pts)}
+
+\textit{Transform a batch of input sequences into a batch of windowed input-output pairs in the} \verb|make_windowed_data| \textit{function. You can test your implementation by running} \verb|python q1_window.py test1|. \\
+
+
+\noindent \textbf{Answer:}\\
+
+\noindent See code: $\sim$\verb|/code/q1_window.py|.
+
+\vskip2em
+
+%-------
+\subsubproblem{ii}{(8 pts)}
+
+\textit{Implement the feed-forward model described above by appropriately completing functions in the} \verb|WindowModel| \textit{class. You can test your implementation by running} \verb|python q1_window.py test2|. \\
+
+
+\noindent \textbf{Answer:}\\
+
+\noindent See code: $\sim$\verb|/code/q1_window.py|.
+
+\vskip2em
+
+
+%-------
+\subsubproblem{iii}{(2 pts)}
+
+\textit{Train your model using the command} \verb|python q1_window.py train|. \textit{The code should take only about 2--3 minutes to run and you should get a development score of at least 81\% F$_{1}$.} \\
+
+
+\noindent \textbf{Answer:}\\
+
+\noindent See code, $\sim$\verb|/code/q1_window.py|, and log file, $\sim$\verb|/code/results/window/20170419_165429/log|. Loading the data, compiling the model, and fitting (for 15 epochs instead of the default 10) took $\sim$44 seconds. The best entity level F$_{1}$ score on the development set was 87\%. 
+
+
+
+\vskip5em
+
+
+
+%----------------------
+\subproblem{d}{Analysis (5 pts)}
+
+
+%-------
+\subsubproblem{i}{(1 pt)}
+
+\textit{Report your best development entity-level F$_{1}$ score and the corresponding token-level confusion matrix. Briefly describe what the confusion matrix tells you about the errors your model is making.} \\
+
+
+\noindent \textbf{Answer:}\\
+
+\noindent The best entity level F$_{1}$ score on the development set was 87\% (see results for epoch 12 in the log file). The token-level confusion matrix can be seen below in Table~\ref{table:window_confusion}.
+
+\begin{table}[!htbp]
+\centering
+\caption{Development Set Confusion Matrix}
+\label{table:window_confusion}
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+              & \multicolumn{5}{c}{Predicted Label}                                     \\ 
+True Label    & \textbf{PER} & \textbf{ORG} & \textbf{LOC} & \textbf{MISC} & \textbf{O} \\ \midrule
+\textit{PER}  & 2,973        & 41           & 57           & 12            & 66         \\
+\textit{ORG}  & 106          & 1,727        & 88           & 57            & 114        \\
+\textit{LOC}  & 36           & 72           & 1,931        & 18            & 37         \\
+\textit{MISC} & 33           & 66           & 34           & 1,026         & 109        \\
+\textit{O}    & 34           & 39           & 24           & 29            & 42,633     \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\noindent We can see, from Table~\ref{table:window_confusion}, that ORG and MISC are the most difficult tags for the model to predict. The model tends to mis-classify tokens of either tag as not being a named entity (i.e., the O tag) far more frequently than for tokens labeled as a person or location. Additionally, we can see that the model mis-classifies organizations as people more frequently than the reverse. 
+
+
+\vskip2em
+
+%-------
+\subsubproblem{ii}{(4 pts)}
+
+\textit{Describe at least 2 modeling limitations of the window-based model and support these conclusions using examples from your model’s output (i.e. identify errors that your model made due to its limitations). You can also support your conclusions using predictions made by your model on examples manually entered through the shell.} \\
+
+
+\noindent \textbf{Answer:}\\
+
+\noindent The first, and most obvious, limitation of the window-based model is that the contextual semantic vectors associated with a word are defined entirely by the window size. Thus, attributes of a word (e.g., a clarifying clause) that are seen more than a few hops away are omitted from the model. An example error that may be attributed to this is the misclassification of the \textit{Titanic} as an organization: \\
+
+\begin{minipage}[t]{0.9\linewidth}
+	``A (O/O) 20-ton (O/O) piece (O/O) of (O/O) the (O/O) \textcolor{red}{Titanic (MISC/ORG)} 's (O/O) steel (O/O) hull (O/O) \dots''. \\
+\end{minipage}
+
+\noindent The model producing this prediction had a window size of two. So when classifying `Titanic', the context was ``of the \textcolor{red}{Titanic} 's steel''. Given this window, it's relatively easy to see how such an error could be made. \\
+
+\noindent A second limitation is the omission of surrounding tags as features. This is especially problematic for identifying geopolitical entities. The following prediction serves a useful example: \\ 
+
+\begin{minipage}[t]{0.9\linewidth}
+	``The (O/O) \textcolor{red}{Federal (LOC/ORG)} Republic (LOC/LOC) \textcolor{red}{of (O/ORG)} Yugoslavia (LOC/LOC) is (O/O) the (O/O) only (O/O) country (O/O) \dots''. \\
+\end{minipage}
+
+\noindent Predictions for `Federal' and `of' should both benefit from knowing the tags associated with nearby words.
 
 
 
 
+%%%%%%-------------------------------------------------
+%%	  PROBLEM 2: RNNs
+%%%%%%-------------------------------------------------
+
+%-------------------------------------
+\problem{Recurrent Neural Nets for NER (40 pts)}
+%-------------------------------------
+%
+\noindent \textit{We will now tackle the task of NER by using a recurrent neural network (RNN). Recall that each RNN cell combines the hidden state vector with the input using a sigmoid. We then use the hidden state to predict the output at each timestep:}
+
+\begin{align}
+	%
+	\bm{e}^{(t)} &= \bm{x}^{(t)} L \nonumber \\
+	%
+	\bm{h}^{(t)} &= \sigma \left( \bm{h}^{(t-1)} W_{h} + \bm{e}^{(t)} W_{x} + \bm{b}_{1} \right) \nonumber \\
+	%
+	\hat{\bm{y}}^{(t)} &= \text{softmax} \left( \bm{h}^{(t)} U + \bm{b}_{2} \right) \text{ , } \nonumber
+	%
+\end{align}
+
+\noindent \textit{where $L \in \mathbb{R}^{V \times D}$ are word embeddings, $W_{h} \in \mathbb{R}^{H \times H}$, $W_{x} \in \mathbb{R}^{D \times H}$, and $\bm{b}_{1} \in \mathbb{R}^{H}$ are the parameters for the RNN cell, and $U \in \mathbb{R}^{H \times C}$ and $\bm{b}_{2} \in \mathbb{R}^{C}$ are the parameters for the softmax. As before, $V$ is the size of the vocabulary, $D$ is the size of the word embedding, $H$ is the size of the hidden layer, and $C$ is the number of classes being predicted (e.g., 5 here).}
+
+\vspace*{0.5em}
+
+\noindent \textit{In order to train the model, we use a cross-entropy loss for every predicted token:}
+
+\begin{align}
+	%
+	J &= \sum_{t=1}^{T} \text{CE} \left( \bm{y}^{(t)} \text{ , } \hat{\bm{y}}^{(t)} \right) \nonumber \\
+	%
+	\text{CE} \left( \bm{y}^{(t)} \text{ , } \hat{\bm{y}}^{(t)} \right) &=
+		- \sum_{i} y_{i}^{(t)} \log \left( \hat{y}_{i}^{(t)} \right) \text{ .} \nonumber
+	%
+\end{align}
+
+
+\vskip2em
+
+%----------------------
+\subproblem{a}{Size and Complexity (4 pts)}
+
+
+%-------
+\subsubproblem{i}{(1 pt)}
+
+\textit{How many more parameters does the RNN model in comparison to the window-based model?} \\
+
+
+\noindent \textbf{Answer:}\\
+%
+\noindent The RNN model has $(H \times H) - (2w \times D \times H)$ more parameters than a window-based model with a window size of $w$. This is because we have the new $W_{h} \in \mathbb{R}^{H \times H}$ weight matrix, but are using a smaller $W_{x} \in \mathbb{R}^{D \times H}$ matrix instead of the $W \in \mathbb{R}^{(2w + 1) \times DH}$ weight matrix from the window model. So, depending on the dimensionality of the embeddings and hidden layer, there may not be much of a difference between the two $wrt$ the number of parameters. For example, if $D = 50$, $H = 200$, and $w=2$ they have the same number of parameters.
+
+
+\vskip2em
+
+
+%-------
+\subsubproblem{ii}{(3 pts)}
+
+\textit{What is the computational complexity of predicting labels for a sentence of length $T$ (for the RNN model)?} \\
+
+
+\noindent \textbf{Answer:}\\
+%
+\noindent Working forward in the network (for one time-step), we first calculate $\bm{e}^{(t)}$ in $O(D)$ time. Next comes $\bm{h}^{(t)}$, which takes $O\left( (H \times H) + DH + H \right)$ operations. Finally, we have to make the predictions, $\hat{\bm{y}}^{(t)}$, and that takes $O(HC + C)$ operations. \\
+
+\noindent So, for one time-period, we can factor the first and second steps to $O\left( (H + D)(H + 1) \right)$ and the prediction step to $O\left( C(H + 1) \right)$. To get the complexity for the entire sentence of length $T$, we combine those two pieces and multiply by $T$: $O\left( \left( (H + D)(H + 1) + C(H + 1) \right) \times T \right)$.
+
+
+\vskip5em
+
+
+%----------------------
+\subproblem{b}{Optimizing the Loss Function (2 pts)}
+
+\textit{Recall that the actual score we want to optimize is entity-level F$_{1}$.} \\
+
+%-------
+\subsubproblem{i}{(1 pt)}
+
+\textit{Name at least one scenario in which decreasing the cross-entropy cost would lead to a} decrease \textit{in entity-level F$_{1}$ scores.}\\ 
+
+
+\noindent \textbf{Answer:}\\
+%
+\noindent This happens pretty much whenever the model moves from predicting an $n \geq 2$ token length entity as being all `O's to predicting some $c < n$ component tokens correct. Token level accuracy will increase, thus lowering the cross-entropy cost. However, at the entity level, the model will now have a lower precision (i.e., TP / (TP + FP)) and recall will remain the same (i.e., TP / (TP + FN)). 
 
 
 
+%-------
+\subsubproblem{ii}{(1 pt)}
+
+\textit{Why is it difficult to directly optimize for F$_{1}$?} \\
+
+
+\noindent \textbf{Answer:}\\
+%
+\noindent One problem with optimizing for F$_{1}$ is that it is not convex (\hyperref{http://icml.cc/2012/papers/175.pdf}{}{}{Ye et al. 2012}). Additionally, is ``non-decomposable'' (\hyperref{https://arxiv.org/abs/1410.6776}{}{}{Kar, Narasimhan and Jain 2014}): meaning that the metric can't be broken down by individual data points. 
+
+
+\vskip5em
 
 
 
+%----------------------
+\subproblem{c}{RNN Cell (5 pts)}
 
-
-
-
+\textit{Implement an RNN cell using the equations described above in the} \verb|rnn_cell| \textit{function of} \verb|q2_rnn_cell.py|. \textit{You can text your implementation by running} \verb|python q2_rnn_cell.py test|. \\
 
 
 
