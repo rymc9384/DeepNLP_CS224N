@@ -352,7 +352,7 @@ True Label    & \textbf{PER} & \textbf{ORG} & \textbf{LOC} & \textbf{MISC} & \te
 %
 \noindent This happens pretty much whenever the model moves from predicting an $n \geq 2$ token length entity as being all `O's to predicting some $c < n$ component tokens correct. Token level accuracy will increase, thus lowering the cross-entropy cost. However, at the entity level, the model will now have a lower precision (i.e., TP / (TP + FP)) and recall will remain the same (i.e., TP / (TP + FN)). 
 
-
+\vskip2em
 
 %-------
 \subsubproblem{ii}{(1 pt)}
@@ -373,6 +373,52 @@ True Label    & \textbf{PER} & \textbf{ORG} & \textbf{LOC} & \textbf{MISC} & \te
 \subproblem{c}{RNN Cell (5 pts)}
 
 \textit{Implement an RNN cell using the equations described above in the} \verb|rnn_cell| \textit{function of} \verb|q2_rnn_cell.py|. \textit{You can text your implementation by running} \verb|python q2_rnn_cell.py test|. \\
+
+
+\noindent \textbf{Answer:}\\
+
+\noindent See code, $\sim$\verb|/code/q2_rnn_cell.py|
+
+
+\vskip5em
+
+
+
+%----------------------
+\subproblem{d}{Padding Sentences (8 pts)}
+
+\textit{Implementing an RNN requires us to unroll the computation over the whole sentence. Unfortunately, each sentence can be of arbitrary length and this would cause the RNN to be unrolled a different number of times for different sentences, making it impossible to batch process the data. The most common way to address this problem is to} pad \textit{our input with zeros. Suppose the largest sentence in our input is $M$ tokens long, then, for an input of length $T$ we will need to:}
+
+\begin{enumerate}
+	%
+	\item \textit{Add ``0-vectors'' to $\bm{x}$ and $\bm{y}$ to make them $M$ tokens long. These ``0-vectors'' are still one-hot vectors, representing a new} \verb|NULL| \textit{token.}
+	%
+	\item \textit{Create a} masking vector, $\left( m^{(t)} \right)_{t=1}^{M}$ \textit{which is 1 for all $t \leq T$ and 0 for all $t > T$. This masking vector will allow us to ignore the predictions that the network makes on the padded input.}
+	%
+	\item \textit{Of course, by extending the input and output by $M-T$ tokens, we might change our loss and hence gradient updates. In order to tackle this problem, we modify our loss using the masking vector:}
+	%
+\end{enumerate}
+%
+\vspace*{-1em}
+%
+\begin{align}
+	%
+	J &= \sum_{t=1}^{M} m^{(t)} \text{CE} \left( y^{(t)} , \hat{y}^{(t)} \right) \nonumber
+	%
+\end{align}
+
+
+
+%-------
+\subsubproblem{i}{(3 pts)}
+
+\textit{How would the loss and gradient updates change if we did not use masking? How does masking solve this problem?}
+
+
+
+
+
+
 
 
 

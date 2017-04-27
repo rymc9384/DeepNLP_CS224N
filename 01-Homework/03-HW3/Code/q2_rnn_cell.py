@@ -42,7 +42,7 @@ class RNNCell(tf.nn.rnn_cell.RNNCell):
 
         TODO: In the code below, implement an RNN cell using @inputs
         (x_t above) and the state (h_{t-1} above).
-            - Define W_x, W_h, b to be variables of the apporiate shape
+            - Define W_x, W_h, b to be variables of the appropriate shape
               using the `tf.get_variable' functions. Make sure you use
               the names "W_x", "W_h" and "b"!
             - Compute @new_state (h_t) defined above
@@ -62,7 +62,14 @@ class RNNCell(tf.nn.rnn_cell.RNNCell):
         # be defined elsewhere!
         with tf.variable_scope(scope):
             ### YOUR CODE HERE (~6-10 lines)
-            pass
+            W_x = tf.get_variable("W_x")
+            W_h = tf.get_variable("W_h")
+            b = tf.get_variable("b")
+            
+            z = tf.matmul(inputs,W_x) + tf.matmul(state, W_h) + b
+            
+            new_state = tf.sigmoid(z)
+            
             ### END YOUR CODE ###
         # For an RNN , the output and state are the same (N.B. this
         # isn't true for an LSTM, though we aren't using one of those in
