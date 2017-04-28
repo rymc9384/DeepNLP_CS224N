@@ -270,7 +270,7 @@ True Label    & \textbf{PER} & \textbf{ORG} & \textbf{LOC} & \textbf{MISC} & \te
 %%%%%%-------------------------------------------------
 
 %-------------------------------------
-\problem{Recurrent Neural Nets for NER (40 pts)}
+\problem{2: Recurrent Neural Nets for NER (40 pts)}
 %-------------------------------------
 %
 \noindent \textit{We will now tackle the task of NER by using a recurrent neural network (RNN). Recall that each RNN cell combines the hidden state vector with the input using a sigmoid. We then use the hidden state to predict the output at each timestep:}
@@ -412,11 +412,36 @@ True Label    & \textbf{PER} & \textbf{ORG} & \textbf{LOC} & \textbf{MISC} & \te
 %-------
 \subsubproblem{i}{(3 pts)}
 
-\textit{How would the loss and gradient updates change if we did not use masking? How does masking solve this problem?}
+\textit{How would the loss and gradient updates change if we did not use masking? How does masking solve this problem?} \\
+
+
+\noindent \textbf{Answer:}\\
+
+\noindent The loss would be impacted based on our predictions of the pads (i.e., predicting 0s). This then would change the gradient as errors are propagated back and impact the learning of the weights. With the masking vector in place, the loss associated with the pads is always 0, so they don't impact learning. 
+
+
+\vskip2em
+
+
+
+%-------
+\subsubproblem{ii}{(5 pts)}
+
+\textit{Implement} \verb|pad_sequences| \textit{in your code. You can test your implementation by running} \verb|python q2_rnn.py test1|. \\
+
+
+\noindent \textbf{Answer:}\\
+
+\noindent See code, $\sim$\verb|/code/q2_rnn.py|. I did essentially the same thing earlier when making the windows in the \verb|make_windowed_data| function of $\sim$\verb|/code/q1_window.py|.
+
+
+\vskip5em
 
 
 
 
+%----------------------
+\subproblem{e}{Implementing an RNN in TensorFlow}
 
 
 

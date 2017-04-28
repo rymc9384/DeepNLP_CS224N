@@ -103,9 +103,17 @@ def pad_sequences(data, max_length):
 
     for sentence, labels in data:
         ### YOUR CODE HERE (~4-6 lines)
-        pass
+        s,l = sentence[:max_length], labels[:max_length]
+        m = [True] * len(s)        
+        diff = max_length - len(s)
+        s += [zero_vector] * diff
+        l += [zero_label] * diff
+        m += [False] * diff
+        ret.append((s,l,m))
         ### END YOUR CODE ###
     return ret
+
+
 
 class RNNModel(NERModel):
     """
