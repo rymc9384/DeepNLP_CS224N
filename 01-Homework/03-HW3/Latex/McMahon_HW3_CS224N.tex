@@ -435,17 +435,32 @@ True Label    & \textbf{PER} & \textbf{ORG} & \textbf{LOC} & \textbf{MISC} & \te
 \noindent See code, $\sim$\verb|/code/q2_rnn.py|. I did essentially the same thing earlier when making the windows in the \verb|make_windowed_data| function of $\sim$\verb|/code/q1_window.py|.
 
 
-\vskip5em
 
 
 
+\newpage
 
 %----------------------
-\subproblem{e}{Implementing an RNN in TensorFlow}
+\subproblem{e}{Implementing an RNN in TensorFlow (12 pts)}
+%
+\textit{Implement the rest of the RNN model assuming only fixed length input by appropriately completing functions in the} \verb|RNNModel| \textit{class. This will involve:}
+%
+\begin{enumerate}
+	%
+	\item \textit{Implementing the} \verb|add_placeholders|, \verb|add_embedding|, \verb|add_training_op| \textit{functions.}
+	%
+	\item \textit{Implementing the} \verb|add_prediction_op| \textit{operation that unrolls the RNN loop} \verb|self.max_length| \textit{times. Remember to} reuse \textit{variables in your variable scope from the 2\ts{nd} timestep onwards to share the RNN cell weights $W_{x}$ and $W_{h}$ across timesteps.}
+	%
+	\item \textit{Implementing the} \verb|add_loss_op| \textit{to handle the mask vector returned in the previous part}
+	%
+\end{enumerate}
+%
+\textit{You can test your implementations by running} \verb|python q2_rnn.py test2|. \\
 
 
+\noindent \textbf{Answer:}\\
 
-
+\noindent See code, $\sim$\verb|/code/q2_rnn.py|.
 
 
 

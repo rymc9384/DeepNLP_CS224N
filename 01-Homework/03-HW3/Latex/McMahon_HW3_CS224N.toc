@@ -25,4 +25,4 @@
 \contentsline {section}{\numberline {2.4}(d)~ Padding Sentences (8 pts)}{8}{section.2.4}
 \contentsline {subsection}{\numberline {2.4.1} i)~ (3 pts)}{8}{subsection.2.4.1}
 \contentsline {subsection}{\numberline {2.4.2} ii)~ (5 pts)}{8}{subsection.2.4.2}
-\contentsline {section}{\numberline {2.5}(e)~ Implementing an RNN in TensorFlow}{8}{section.2.5}
+\contentsline {section}{\numberline {2.5}(e)~ Implementing an RNN in TensorFlow (12 pts)}{9}{section.2.5}
